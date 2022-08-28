@@ -27,6 +27,7 @@ function createWindow() {
     icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
     width: 1000,
     height: 600,
+    maximizable: false,
     useContentSize: true,
     webPreferences: {
       webSecurity: false,
@@ -36,7 +37,8 @@ function createWindow() {
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },
   });
-
+  mainWindow.setBackgroundColor('#271c19')
+  mainWindow.maximize();
   mainWindow.loadURL(process.env.APP_URL);
 
   if (process.env.DEBUGGING) {

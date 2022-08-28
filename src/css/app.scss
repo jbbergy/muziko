@@ -1,1 +1,17 @@
 // app global css in SCSS form
+.m-background {
+  background-color: $background;
+}
+
+.m-background-headline {
+  background-color: $background-2;
+}
+
+.m-text-color-1 {
+  color: $text-color-1;
+}
+
+.m-drawer-bg {
+  background-color: $drawer-bg-color;
+  color: $stroke;
+}
