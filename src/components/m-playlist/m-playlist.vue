@@ -5,7 +5,7 @@
       v-ripple
       v-for="file in filesList"
       :key="file.uuid"
-      @click="selectAudioFile(file)"
+      @dblclick="selectAudioFile(file)"
     >
       <q-item-section>{{ file.name }}</q-item-section>
     </q-item>
