@@ -1,23 +1,10 @@
-export type SysNode = {
-  isDir: boolean
-  isSymLink: boolean
-  metadata: {
-    dev: number,
-    mode: number,
-    nlink: number,
-    uid: number,
-    gid: number
-  }
-  name:string
-  path:string
-};
-
-export type Node = {
+export type TreeItem = {
   uuid: string
   label: string
   isDir: boolean
-  isSymLink: boolean
+  isSymLink?: boolean
   name:string
   path:string
+  children?: TreeItem[]|null
 };
 

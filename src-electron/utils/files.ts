@@ -1,43 +1,65 @@
+import { v4 as uuidv4 } from 'uuid';
 import path from 'path'
 import fse from 'fs-extra'
+import { TreeItem } from 'src/types/nodes.type';
 
-export function readDirectory(folder: string) {
-  const result:any[] = []
+export function readDirectory(directory: string) {
+  const directoryTree: TreeItem[] = [] as TreeItem[]
   try {
-    const files = fse.readdirSync(folder)
+    const files = fse.readdirSync(directory)
     for (const file of files) {
-      try {
-        const pathToFile = path.join(folder, file)
-        const stat = fse.statSync(pathToFile)
+      
+      const pathToFile = path.join(directory, file)
+      const stat = fse.statSync(pathToFile)
 
-        const isDirectory = stat.isDirectory()
-        const isSymbolicLink = stat.isSymbolicLink()
+      const isDirectory = stat.isDirectory()
+      const isSymbolicLink = stat.isSymbolicLink()
 
-        const retVal = {
+      const retVal:TreeItem = {
+        uuid: uuidv4(),
+        path: pathToFile,
+        label: file,
+        name: file,
+        isDir: isDirectory,
+        isSymLink: isSymbolicLink,
+      }
+
+      if (retVal.isDir) {
+        directoryTree?.push(retVal)
+        retVal.children = readDirectory(retVal.path)
+      }
+    }
+  } catch (error) {
+    console.error(error)
+  }
+  return directoryTree
+}
+
+export function listFilesFromDirectory(directory: string) {
+  const filesList: TreeItem[] = [] as TreeItem[]
+  try {
+    const files = fse.readdirSync(directory)
+    for (const file of files) {
+      
+      const pathToFile = path.join(directory, file)
+      const stat = fse.statSync(pathToFile)
+
+      const isDirectory = stat.isDirectory()
+
+      if (!isDirectory) {
+        const retVal:TreeItem = {
+          uuid: uuidv4(),
           path: pathToFile,
+          label: file,
           name: file,
           isDir: isDirectory,
-          isSymLink: isSymbolicLink,
-          metadata: stat
+          isSymLink: false,
         }
-        result?.push(retVal)
-      }
-      catch (err) {
-        const retVal = {
-          path: path.join(folder, file),
-          name: file,
-          error: err
-        }
-        result?.push(retVal)
+        filesList?.push(retVal)
       }
     }
+  } catch (error) {
+    console.error(error)
   }
-  catch (err) {
-    const retVal = {
-      path: folder,
-      error: err
-    }
-    result?.push(retVal)
-  }
-  return result
+  return filesList
 }

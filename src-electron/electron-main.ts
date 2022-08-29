@@ -3,6 +3,7 @@ import path from 'path';
 import os from 'os';
 
 import { readDirectoryHandler } from './handlers/readDirectory'
+import { listFilesFromDirectoryHandler } from './handlers/listFilesFromDirectory'
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform();
@@ -16,6 +17,7 @@ try {
 } catch (_) { }
 
 readDirectoryHandler()
+listFilesFromDirectoryHandler()
 
 let mainWindow: BrowserWindow | undefined;
 

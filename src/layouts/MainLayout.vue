@@ -20,19 +20,10 @@
       bordered
       class="m-drawer-bg"
     >
-      selected: {{ selected }}
-      <q-tree
-        v-if="nodes"
-        ref="tree"
-        :nodes="nodes"
-        node-key="uuid"
-        no-connectors
-        v-model:selected="selected"
-      @update:selected="onSelect"
-      />
+      <m-items-list />
     </q-drawer>
 
-    <q-page-container class="m-background">
+    <q-page-container class="m-background text-white">
       <router-view />
     </q-page-container>
 
@@ -44,47 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import { readDirectory } from '../api/api';
-import { Node } from '../types/nodes.type';
+import MItemsList from 'src/components/m-items-list/m-items-list.vue';
 import MPlayer from 'src/components/m-player/m-player.vue';
-import { ref, onMounted } from 'vue';
-import { v4 as uuidv4 } from 'uuid';
+import { ref } from 'vue';
 
 const leftDrawerOpen = ref(true);
-
-let selected = ref<Node>();
-
-let tree = ref();
-let nodes = ref<Node[]>();
-
-function onSelect(evt: string) {
-  console.log('onSelect', evt);
-  if (!nodes.value) return;
-  selected.value = nodes.value.find((n) => n.uuid == evt);
-}
-
-onMounted(async () => {
-  const result = await readDirectory('H:/MUSIQUE');
-  nodes.value = result
-    ?.filter((currNode) => currNode.isDir)
-    .map((currNode) => {
-      return {
-        uuid: uuidv4(),
-        label: `/${currNode.name}`,
-        isDir: currNode.isDir,
-        isSymLink: currNode.isSymLink,
-        path: currNode.path,
-        children: [
-          {
-            uuid: uuidv4(),
-            label: 'test',
-            isDir: currNode.isDir,
-            isSymLink: currNode.isSymLink,
-            path: currNode.path,
-          },
-        ],
-      };
-    });
-  selected.value = nodes.value[0];
-});
 </script>
