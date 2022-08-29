@@ -29,6 +29,8 @@ function onSelect(evt: string) {
 }
 
 onMounted(async () => {
-  nodes.value = await readDirectory('H:/MUSIQUE');
+  if (store.settings?.defaultPath) {
+    nodes.value = await readDirectory(store.settings?.defaultPath);
+  }
 });
 </script>

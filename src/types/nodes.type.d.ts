@@ -8,3 +8,7 @@ export type TreeItem = {
   children?: TreeItem[]|null
 };
 
+export type Settings = {
+  defaultPath:string
+}
+

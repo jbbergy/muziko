@@ -1,5 +1,9 @@
 
-import { TreeItem } from '../types/nodes.type'
+import { TreeItem, Settings } from '../types/nodes.type'
+
+export async function getSettings ():Promise<Settings> {
+  return await myApi.getSettings()
+}
 
 export async function readDirectory (path: string):Promise<TreeItem[]> {
   const result = await myApi.readDirectory(path)

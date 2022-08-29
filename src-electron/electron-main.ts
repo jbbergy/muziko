@@ -2,8 +2,10 @@ import { app, BrowserWindow, nativeTheme } from 'electron';
 import path from 'path';
 import os from 'os';
 
+import { getSettingsHandler } from './handlers/getSettings'
 import { readDirectoryHandler } from './handlers/readDirectory'
 import { listFilesFromDirectoryHandler } from './handlers/listFilesFromDirectory'
+import { initSettings } from './utils/config';
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform();
@@ -16,6 +18,8 @@ try {
   }
 } catch (_) { }
 
+initSettings()
+getSettingsHandler()
 readDirectoryHandler()
 listFilesFromDirectoryHandler()
 
