@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path'
 import fse from 'fs-extra'
+import mime from 'mime-types'
 import { TreeItem } from 'src/types/nodes.type';
 
 export function readDirectory(directory: string) {
@@ -46,7 +47,9 @@ export function listFilesFromDirectory(directory: string) {
 
       const isDirectory = stat.isDirectory()
 
-      if (!isDirectory) {
+      const mimeType = mime.lookup(pathToFile)
+
+      if (!isDirectory && mimeType.toString().includes('audio')) {
         const retVal:TreeItem = {
           uuid: uuidv4(),
           path: pathToFile,
@@ -54,6 +57,7 @@ export function listFilesFromDirectory(directory: string) {
           name: file,
           isDir: isDirectory,
           isSymLink: false,
+          mime: mimeType
         }
         filesList?.push(retVal)
       }

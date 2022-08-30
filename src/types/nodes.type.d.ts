@@ -4,7 +4,8 @@ export type TreeItem = {
   isDir: boolean
   isSymLink?: boolean
   name:string
-  path:string
+  path: string
+  mime?: string
   children?: TreeItem[]|null
 };
 

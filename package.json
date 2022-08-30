@@ -6,6 +6,7 @@
   "author": "Jean-Baptiste BERGY",
   "private": true,
   "scripts": {
+    "build": "quasar build -m electron",
     "dev": "quasar dev -m electron",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
@@ -14,6 +15,7 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "fs-extra": "^10.1.0",
+    "mime-types": "^2.1.35",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
     "uuidv4": "^6.2.13",
@@ -27,6 +29,7 @@
     "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.2",
     "electron": "^20.1.0",
+    "electron-packager": "^15.5.2",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
