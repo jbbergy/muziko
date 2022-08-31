@@ -3,51 +3,72 @@
     <button @click="stop">stop</button>
     <button @click="pause">pause</button>
     <button @click="play">play</button>
+    {{ progressBarValue }}%
     <audio id="audioPlayer" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { Howl, Howler } from 'howler';
 import { computed, ref, watch } from 'vue';
 import { useGlobalStore } from 'src/stores/global';
 
-const audioPlayer = ref();
-const store = useGlobalStore();
+const howlerObj = ref();
+let isPaused = ref(false);
+let seek = ref(0);
+let duration = ref(0);
 
+const store = useGlobalStore();
+let intervalId: NodeJS.Timeout | null = null;
+const progressBarValue = computed(() => {
+  let result = 0;
+  if (duration.value > 0) {
+    result = (seek.value / duration.value) * 100;
+  }
+  return result;
+});
 const fileToPlay = computed(() => store.fileToPlay);
 
-watch(fileToPlay, (value) => {
-  console.log('watch fileToPlay', value);
-  audioPlayer.value = document.querySelector('#audioPlayer');
-  console.log('audioPlayer', audioPlayer.value);
-  if (!audioPlayer.value) return;
-
-  audioPlayer.value.pause();
-  audioPlayer.value.src = value;
-  audioPlayer.value.volume = 0.3;
-  audioPlayer.value.currentTime = 0;
-  audioPlayer.value.play();
+watch(fileToPlay, () => {
+  stop();
+  play();
 });
 
 function stop() {
-  console.log('stop');
-  if (!audioPlayer.value) return;
-  audioPlayer.value.pause();
-  audioPlayer.value.src = null;
+  if (howlerObj.value?.playing() || isPaused.value === true) {
+    howlerObj.value.stop();
+    isPaused.value = false;
+  }
 }
 
 function pause() {
-  console.log('pause');
-  if (!audioPlayer.value) return;
-  audioPlayer.value.pause();
+  howlerObj.value.pause();
+  isPaused.value = true;
 }
 
 function play() {
-  console.log('play');
-  if (!audioPlayer.value) return;
-  if (audioPlayer.value.paused) {
-    audioPlayer.value.play();
+  if (isPaused.value === false) {
+    if (!!intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+    howlerObj.value = new Howl({
+      src: [fileToPlay.value],
+      html5: Howler.usingWebAudio,
+    });
+    howlerObj.value.volume(0.3);
+    howlerObj.value.on('load', function (e) {
+      duration.value = howlerObj.value.duration();
+    });
+    howlerObj.value.on('end', function () {
+      console.log('TODO: Load next file');
+    });
+    intervalId = setInterval(() => {
+      seek.value = howlerObj.value?.seek();
+    }, 500);
   }
+  howlerObj.value.play();
+  isPaused.value = false;
 }
 </script>
 

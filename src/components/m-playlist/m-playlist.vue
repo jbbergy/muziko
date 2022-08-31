@@ -35,3 +35,10 @@ watch(selected, async function (value: TreeItem, oldValue: TreeItem) {
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.q-list {
+  width: 100%;
+}
+</style>
+
