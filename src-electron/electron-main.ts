@@ -3,9 +3,11 @@ import path from 'path';
 import os from 'os';
 
 import { getSettingsHandler } from './handlers/getSettings'
+import { setSettingsHandler } from './handlers/setSettings'
 import { readDirectoryHandler } from './handlers/readDirectory'
 import { listFilesFromDirectoryHandler } from './handlers/listFilesFromDirectory'
 import { initSettings } from './utils/config';
+import { selectDirectoryHandler } from './handlers/selectDirectory';
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform();
@@ -20,8 +22,10 @@ try {
 
 initSettings()
 getSettingsHandler()
+setSettingsHandler()
 readDirectoryHandler()
 listFilesFromDirectoryHandler()
+selectDirectoryHandler()
 
 let mainWindow: BrowserWindow | undefined;
 

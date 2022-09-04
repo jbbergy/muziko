@@ -20,6 +20,7 @@
       bordered
       class="m-drawer-bg"
     >
+      <router-link to="/settings">Paramètres</router-link>
       <m-items-list />
     </q-drawer>
 
