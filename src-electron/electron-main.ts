@@ -4,10 +4,13 @@ import os from 'os';
 
 import { getSettingsHandler } from './handlers/getSettings'
 import { setSettingsHandler } from './handlers/setSettings'
+import { getLibraryHandler } from './handlers/getLibrary'
+import { setLibraryHandler } from './handlers/setLibrary'
 import { readDirectoryHandler } from './handlers/readDirectory'
 import { listFilesFromDirectoryHandler } from './handlers/listFilesFromDirectory'
 import { initSettings } from './utils/config';
 import { selectDirectoryHandler } from './handlers/selectDirectory';
+import { initLibrary } from './utils/library';
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform();
@@ -21,8 +24,11 @@ try {
 } catch (_) { }
 
 initSettings()
+initLibrary()
 getSettingsHandler()
 setSettingsHandler()
+getLibraryHandler()
+setLibraryHandler()
 readDirectoryHandler()
 listFilesFromDirectoryHandler()
 selectDirectoryHandler()

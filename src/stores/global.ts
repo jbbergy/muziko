@@ -6,10 +6,12 @@ export const useGlobalStore = defineStore('global', () => {
   const selectedItem = ref<TreeItem>()
   const fileToPlay = ref<string>()
   const settings = ref<Settings>()
+  const library = ref<TreeItem[]>()
 
   return {
     selectedItem,
     fileToPlay,
-    settings
+    settings,
+    library
   }
 });

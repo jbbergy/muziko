@@ -22,6 +22,7 @@
     >
       <router-link to="/settings">Paramètres</router-link>
       <m-items-list />
+      <button @click="addFolder">Ajouter un dossier</button>
     </q-drawer>
 
     <q-page-container class="m-background text-white">
@@ -41,4 +42,8 @@ import MPlayer from 'src/components/m-player/m-player.vue';
 import { ref } from 'vue';
 
 const leftDrawerOpen = ref(true);
+
+function addFolder() {
+  console.log('addFolder');
+}
 </script>

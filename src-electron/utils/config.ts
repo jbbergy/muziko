@@ -13,20 +13,21 @@ export function initSettings() {
 
   try {
     const data = fse.readJsonSync(settingsPath)
+    return data
   } catch (warn) {
     console.warn('initConfig/readJsonSync warning', warn)
-    fse.outputJsonSync(settingsPath, {
+    fse.writeJsonSync(settingsPath, {
       defaultPath: 'H:/MUSIQUE'
     })
   }
 }
 
-export async function getSettings() {
+export async function getSettings(): Promise<MSetttings|undefined> {
   try {
     const data = await fse.readJson(settingsPath)
-    return data
+    return data as MSetttings
   } catch (error) {
-    console.error('initConfig/getSettings error', error)
+    console.error('getSettings error', error)
   }
 }
 
@@ -36,6 +37,6 @@ export async function setSettings(settings: MSetttings): Promise<boolean> {
     return true
   } catch (error) {
     return false
-    console.error('initConfig/setSettings error', error)
+    console.error('setSettings error', error)
   }
 }

@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { findNestedObj } from '../../utils/findNestedObj';
-import { readDirectory } from '../../api/api';
+import { getLibrary } from '../../api/api';
 import { TreeItem } from '../../types/nodes.type';
 import { ref, onMounted } from 'vue';
 import { useGlobalStore } from 'src/stores/global';
@@ -30,7 +30,8 @@ function onSelect(evt: string) {
 
 onMounted(async () => {
   if (store.settings?.defaultPath) {
-    nodes.value = await readDirectory(store.settings?.defaultPath);
+    store.library = await getLibrary();
+    nodes.value = store.library;
   }
 });
 </script>
