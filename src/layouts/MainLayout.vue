@@ -39,11 +39,24 @@
 <script setup lang="ts">
 import MItemsList from 'src/components/m-items-list/m-items-list.vue';
 import MPlayer from 'src/components/m-player/m-player.vue';
-import { ref } from 'vue';
+import { useGlobalStore } from 'src/stores/global';
+import { Library } from 'src/types/nodes.type';
+import { reactive, ref } from 'vue';
 
+const store = useGlobalStore();
 const leftDrawerOpen = ref(true);
+const libraryData = reactive<Library>(store.library);
 
-function addFolder() {
-  console.log('addFolder');
+async function addFolder() {
+  let dir = null;
+  try {
+    dir = await myApi.selectDirectory();
+  } catch (error) {
+    console.error('addFolder error', error);
+  }
+
+  if (dir) {
+    store.library = await myApi.addDirectory(dir[0]);
+  }
 }
 </script>

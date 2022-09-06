@@ -18,7 +18,7 @@ export async function selectDirectory() {
   return result?.filePaths
 }
 
-export function readDirectory(directory: string) {
+export function readDirectory(directory: string):TreeItem[] {
   const directoryTree: TreeItem[] = [] as TreeItem[]
   try {
     const files = fse.readdirSync(directory)

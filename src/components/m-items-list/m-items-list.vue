@@ -13,14 +13,12 @@
 import { findNestedObj } from '../../utils/findNestedObj';
 import { getLibrary } from '../../api/api';
 import { TreeItem } from '../../types/nodes.type';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useGlobalStore } from 'src/stores/global';
 
 const store = useGlobalStore();
 
 let selected = ref<TreeItem>({} as TreeItem);
-
-let nodes = ref<TreeItem[]>();
 
 function onSelect(evt: string) {
   if (!nodes.value) return;
@@ -28,10 +26,11 @@ function onSelect(evt: string) {
   store.selectedItem = foundItem;
 }
 
+const nodes: TreeItem[] = computed(() => store.library);
+
 onMounted(async () => {
   if (store.settings?.defaultPath) {
     store.library = await getLibrary();
-    nodes.value = store.library;
   }
 });
 </script>

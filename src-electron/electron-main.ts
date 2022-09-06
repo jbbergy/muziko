@@ -11,6 +11,7 @@ import { listFilesFromDirectoryHandler } from './handlers/listFilesFromDirectory
 import { initSettings } from './utils/config';
 import { selectDirectoryHandler } from './handlers/selectDirectory';
 import { initLibrary } from './utils/library';
+import { addDirectoryHandler } from './handlers/addDirectory';
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform();
@@ -32,6 +33,7 @@ setLibraryHandler()
 readDirectoryHandler()
 listFilesFromDirectoryHandler()
 selectDirectoryHandler()
+addDirectoryHandler()
 
 let mainWindow: BrowserWindow | undefined;
 

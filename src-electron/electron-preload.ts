@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld(
     setLibrary: async (items: TreeItem) => await ipcRenderer.invoke('myApi:setLibrary', items),
     readDirectory: (path: unknown) => ipcRenderer.invoke('myApi:readDirectory', path),
     listFilesFromDirectory: (path: unknown) => ipcRenderer.invoke('myApi:listFilesFromDirectory', path),
-    selectDirectory: () => ipcRenderer.invoke('myApi:selectDirectory')
+    selectDirectory: () => ipcRenderer.invoke('myApi:selectDirectory'),
+    addDirectory: (directory: string) => ipcRenderer.invoke('myApi:addDirectory', directory)
   }
 )

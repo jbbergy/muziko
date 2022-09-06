@@ -13,3 +13,7 @@ export type Settings = {
   defaultPath:string
 }
 
+export type Library = {
+  library:TreeItem[]
+}
+

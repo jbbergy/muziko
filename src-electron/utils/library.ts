@@ -1,6 +1,6 @@
 import path from 'path'
 import fse from 'fs-extra'
-import { TreeItem } from '../../src/types/nodes.type'
+import { Library, TreeItem } from '../../src/types/nodes.type'
 import { readDirectory } from './files'
 import { getSettings } from './config'
 
@@ -54,10 +54,49 @@ export async function getLibrary() {
 
 export async function setLibrary(items: TreeItem[]): Promise<boolean> {
   try {
-    await fse.writeJson(libraryPath, items)
+    const library = {
+      library: items
+    }
+    await fse.writeJson(libraryPath, library)
     return true
   } catch (error) {
     return false
     console.error('setLibrary error', error)
   }
+}
+
+export async function addDirectory(directory: string): Promise<TreeItem[]|null> {
+  if (directory === '') return null
+
+  const library: Library = {
+    library: []
+  }
+  try {
+    library.library = await getLibrary()
+  } catch (error) {
+    console.error('addDirectory/getLibrary error', error)
+  }
+
+  if (!library.library) return null
+
+  let newTree: TreeItem[]|null = null
+  try {
+    newTree = readDirectory(directory)
+  } catch (error) {
+    console.error('addDirectory/readDirectory error', error)
+  }
+
+  if (!newTree) return null
+
+  newTree.forEach((tree) => {
+    library.library?.push(tree)
+  })
+
+  try {
+    await setLibrary(library.library)
+  } catch (error) {
+    console.error('addDirectory/setLibrary error', error)
+  }
+
+  return library.library
 }
