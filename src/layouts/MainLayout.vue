@@ -1,14 +1,16 @@
 <template>
   <q-layout view="lHh lpR lFf">
 
-    <q-header reveal class="m-background-headline m-text-color-1">
+    <q-header reveal class="ds-header">
       <q-toolbar>
 
         <q-toolbar-title>
           <!-- <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
           </q-avatar> -->
-          Muziko
+          <span class="ds-title-1">
+            Muziko
+          </span>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -18,18 +20,18 @@
       v-model="leftDrawerOpen"
       side="left"
       bordered
-      class="m-drawer-bg"
+      class="ds-drawer"
     >
       <router-link to="/settings">Paramètres</router-link>
       <m-items-list />
       <button @click="addFolder">Ajouter un dossier</button>
     </q-drawer>
 
-    <q-page-container class="m-background text-white">
+    <q-page-container class="ds-content-main">
       <router-view />
     </q-page-container>
 
-    <q-footer class="m-background-headline m-text-color-1">
+    <q-footer class="ds-player">
       <m-player />
     </q-footer>
 

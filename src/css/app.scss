@@ -1,17 +1,11 @@
-// app global css in SCSS form
-.m-background {
-  background-color: $background;
-}
+@import './usages/usage.header.scss';
+@import './usages/usage.title.scss';
+@import './usages/usage.content.scss';
+@import './usages/usage.player.scss';
+@import './usages/usage.drawer.scss';
 
-.m-background-headline {
-  background-color: $background-2;
-}
-
-.m-text-color-1 {
-  color: $text-color-1;
-}
-
-.m-drawer-bg {
-  background-color: $drawer-bg-color;
-  color: $stroke;
-}
+@import './components/component.header.scss';
+@import './components/component.title.scss';
+@import './components/component.content.scss';
+@import './components/component.player.scss';
+@import './components/component.drawer.scss';
