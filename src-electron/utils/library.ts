@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import path from 'path'
 import fse from 'fs-extra'
 import { Library, TreeItem } from '../../src/types/nodes.type'
@@ -31,8 +32,24 @@ export async function initLibrary() {
     try {
       items = await readDirectory(settings.defaultPath)
 
+      const basename = path.basename(settings.defaultPath)
+      const stat = fse.statSync(settings.defaultPath)
+
+      const isDirectory = stat.isDirectory()
+      const isSymbolicLink = stat.isSymbolicLink()
+
+      const retVal:TreeItem = {
+        uuid: uuidv4(),
+        path: settings.defaultPath,
+        label: basename,
+        name: basename,
+        isDir: isDirectory,
+        isSymLink: isSymbolicLink,
+        children: items
+      }
+
       library = {
-        library: items
+        library: [retVal]
       }
 
       fse.writeJsonSync(libraryPath, library)
@@ -69,7 +86,7 @@ export async function addDirectory(directory: string): Promise<TreeItem[]|null> 
   if (directory === '') return null
 
   const library: Library = {
-    library: []
+    library: [] as TreeItem[]
   }
   try {
     library.library = await getLibrary()
@@ -87,10 +104,23 @@ export async function addDirectory(directory: string): Promise<TreeItem[]|null> 
   }
 
   if (!newTree) return null
+  const basename = path.basename(directory)
+  const stat = fse.statSync(directory)
 
-  newTree.forEach((tree) => {
-    library.library?.push(tree)
-  })
+  const isDirectory = stat.isDirectory()
+  const isSymbolicLink = stat.isSymbolicLink()
+
+  const retVal:TreeItem = {
+    uuid: uuidv4(),
+    path: directory,
+    label: basename,
+    name: basename,
+    isDir: isDirectory,
+    isSymLink: isSymbolicLink,
+    children: newTree
+  }
+
+  library.library.push(retVal)
 
   try {
     await setLibrary(library.library)

@@ -7,8 +7,6 @@ import { app, dialog, OpenDialogOptions,BrowserWindow } from 'electron'
 
 export async function selectDirectory() {
   const options:OpenDialogOptions = {
-    title : 'Custom title bar',
-    buttonLabel : 'Custom button',
     properties: ['openDirectory']
   }
   if (!app.isReady) return
