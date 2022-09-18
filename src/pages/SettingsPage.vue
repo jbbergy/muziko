@@ -35,7 +35,7 @@ watch(
 
 async function getDir() {
   const dir = await myApi.selectDirectory();
-  if (dir) {
+  if (dir?.length > 0) {
     settingsData.defaultPath = dir[0];
   }
 }

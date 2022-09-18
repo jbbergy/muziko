@@ -27,29 +27,11 @@ export async function initLibrary() {
       console.error('initLibrary error', error)
     }
     if (!settings ) return
-    let items: TreeItem[]
     let library = null
     try {
-      items = await readDirectory(settings.defaultPath)
-
-      const basename = path.basename(settings.defaultPath)
-      const stat = fse.statSync(settings.defaultPath)
-
-      const isDirectory = stat.isDirectory()
-      const isSymbolicLink = stat.isSymbolicLink()
-
-      const retVal:TreeItem = {
-        uuid: uuidv4(),
-        path: settings.defaultPath,
-        label: basename,
-        name: basename,
-        isDir: isDirectory,
-        isSymLink: isSymbolicLink,
-        children: items
-      }
 
       library = {
-        library: [retVal]
+        library: []
       }
 
       fse.writeJsonSync(libraryPath, library)

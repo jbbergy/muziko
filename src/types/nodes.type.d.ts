@@ -1,5 +1,6 @@
 export type TreeItem = {
   uuid: string
+  isPlaying?: boolean
   label: string
   isDir: boolean
   isSymLink?: boolean

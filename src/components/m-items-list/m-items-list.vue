@@ -29,8 +29,6 @@ function onSelect(evt: string) {
 const nodes: TreeItem[] = computed(() => store.library);
 
 onMounted(async () => {
-  if (store.settings?.defaultPath) {
-    store.library = await getLibrary();
-  }
+  store.library = await getLibrary();
 });
 </script>

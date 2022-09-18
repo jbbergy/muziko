@@ -17,7 +17,7 @@ export function initSettings() {
   } catch (warn) {
     console.warn('initConfig/readJsonSync warning', warn)
     fse.writeJsonSync(settingsPath, {
-      defaultPath: 'H:/MUSIQUE'
+      defaultPath: 'H:\\MUSIQUE'
     })
   }
 }

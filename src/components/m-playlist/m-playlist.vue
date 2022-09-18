@@ -23,19 +23,24 @@ import { listFilesFromDirectory } from 'src/api/api';
 
 const store = useGlobalStore();
 let selected = computed(() => store.selectedItem);
-let filesList = ref<TreeItem[] | null>();
+let filesList = computed(() => store.filesList);
 
 function selectAudioFile(file: TreeItem) {
   store.fileToPlay = file.path;
+  file.isPlaying = true;
+  if (!store.queue) {
+    store.queue = [] as TreeItem[];
+  }
+  store.queue?.push(file);
 }
 
 watch(selected, async function (value: TreeItem) {
   if (value?.isDir) {
     const files = await listFilesFromDirectory(value?.path);
     if (files?.length > 0) {
-      filesList.value = files;
+      store.filesList = files;
     } else {
-      filesList.value = null;
+      store.filesList = null;
     }
   }
 });
