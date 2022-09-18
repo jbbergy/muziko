@@ -1,5 +1,5 @@
 <template>
-  <q-list bordered separator>
+  <q-list v-if="filesList" bordered separator>
     <q-item 
       clickable
       v-ripple
@@ -10,6 +10,9 @@
       <q-item-section>{{ file.name }}</q-item-section>
     </q-item>
   </q-list>
+  <q-banner v-else rounded>
+    No files found
+  </q-banner>
 </template>
 
 <script setup lang="ts">
@@ -20,17 +23,19 @@ import { listFilesFromDirectory } from 'src/api/api';
 
 const store = useGlobalStore();
 let selected = computed(() => store.selectedItem);
-let filesList = ref<TreeItem[]>();
+let filesList = ref<TreeItem[] | null>();
 
 function selectAudioFile(file: TreeItem) {
   store.fileToPlay = file.path;
 }
 
-watch(selected, async function (value: TreeItem, oldValue: TreeItem) {
+watch(selected, async function (value: TreeItem) {
   if (value?.isDir) {
     const files = await listFilesFromDirectory(value?.path);
     if (files?.length > 0) {
       filesList.value = files;
+    } else {
+      filesList.value = null;
     }
   }
 });
@@ -39,6 +44,12 @@ watch(selected, async function (value: TreeItem, oldValue: TreeItem) {
 <style lang="scss" scoped>
 .q-list {
   width: 100%;
+}
+.q-banner {
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  color: $dark;
 }
 </style>
 
