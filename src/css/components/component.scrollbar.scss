@@ -1,0 +1,15 @@
+::-webkit-scrollbar {
+  width: 0.5rem;
+  background: $ds-color-track;
+  overflow: auto;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 0.5rem;
+  background: $ds-color-thumb;
+  border-radius: 999px;
+
+  &:hover {
+    background: lighten($ds-color-thumb, $lighten-amount);
+  }
+}
