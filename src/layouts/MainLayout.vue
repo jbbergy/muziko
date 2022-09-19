@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="lHh lpR lFf">
+  <q-layout view="LHh LpR LFf">
 
-    <q-header reveal class="ds-header">
+    <q-header class="ds-header">
       <q-toolbar>
 
         <q-toolbar-title>
@@ -16,15 +16,25 @@
     </q-header>
 
     <q-drawer
-      show-if-above
       v-model="leftDrawerOpen"
       side="left"
-      bordered
+      behavior="desktop"
       class="ds-drawer"
     >
-      <router-link to="/settings">Paramètres</router-link>
+      <router-link to="/settings">
+        <button
+          class="ds-button ds-button--secondary ds-button--control ds-button--control-small"
+        >
+          <img src="../assets/icons/btn-settings.svg" alt="settings button" />
+        </button>
+      </router-link>
       <m-items-list />
-      <button @click="addFolder">Ajouter un dossier</button>
+      <button
+        class="ds-button"
+        @click="addFolder"
+      >
+        Ajouter un dossier
+      </button>
     </q-drawer>
 
     <q-page-container class="ds-content-main">

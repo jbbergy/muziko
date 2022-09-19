@@ -1,4 +1,8 @@
 .ds-drawer {
   background-color: $ds-drawer-bg-color;
   color: $ds-drawer-color;
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
 }

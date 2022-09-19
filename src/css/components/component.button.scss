@@ -1,0 +1,39 @@
+.ds-button {
+  background-color: $ds-button-bg-1;
+  color: $ds-button-color;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+
+  &:hover {
+    background-color: lighten($ds-button-bg-1, $lighten-amount);
+  }
+
+  &--secondary {
+    background-color: $ds-button-bg-2;
+
+    &:hover {
+      background-color: lighten($ds-button-bg-2, $lighten-amount);
+    }
+  }
+
+  &--control {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    width: 3rem;
+    padding: 0.25rem;
+
+    img {
+      width: 100%;
+    }
+
+    &-small {
+      height: 2rem;
+      width: 2rem;
+    }
+  }
+}

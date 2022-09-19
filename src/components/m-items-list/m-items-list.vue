@@ -2,6 +2,7 @@
   <q-tree
     v-if="nodes"
     :nodes="nodes"
+    color="accent"
     node-key="uuid"
     no-connectors
     v-model:selected="selected"

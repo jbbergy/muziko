@@ -26,7 +26,7 @@ let selected = computed(() => store.selectedItem);
 let filesList = computed(() => store.filesList);
 
 function selectAudioFile(file: TreeItem) {
-  store.fileToPlay = file.path;
+  store.fileToPlay = file;
   file.isPlaying = true;
   if (!store.queue) {
     store.queue = [] as TreeItem[];
