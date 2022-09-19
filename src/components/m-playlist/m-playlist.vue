@@ -1,5 +1,9 @@
 <template>
-  <q-list v-if="filesList" bordered separator>
+  <q-list
+    v-if="filesList"
+    bordered
+    separator
+  >
     <q-item 
       clickable
       v-ripple
