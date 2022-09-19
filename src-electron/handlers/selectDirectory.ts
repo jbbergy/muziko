@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron'
-import { selectDirectory } from '../utils/files'
+import { selectDirectory } from '../managers/files'
 
 export function selectDirectoryHandler () {
   ipcMain.handle('myApi:selectDirectory', async () => {

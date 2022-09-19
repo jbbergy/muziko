@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron'
-import { getSettings } from '../utils/config'
+import { getSettings } from '../managers/config'
 
 export function getSettingsHandler () {
   ipcMain.handle('myApi:getSettings', async () => {

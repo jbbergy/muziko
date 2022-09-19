@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { getSettings } from './api/api';
+import { getSettings } from './api/settings.api';
 import { useGlobalStore } from './stores/global';
 
 const store = useGlobalStore();

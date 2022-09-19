@@ -11,14 +11,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
 import { findNestedObj } from '../../utils/findNestedObj';
-import { getLibrary } from '../../api/api';
+import { getLibrary } from '../../api/library.api';
 import { TreeItem } from '../../types/nodes.type';
 import { ref, onMounted, computed } from 'vue';
 import { useGlobalStore } from 'src/stores/global';
 
-const router = useRouter();
 const store = useGlobalStore();
 
 let selected = ref<TreeItem>({} as TreeItem);
@@ -27,9 +25,6 @@ function onSelect(evt: string) {
   if (!nodes.value) return;
   const foundItem = findNestedObj(nodes.value, 'uuid', evt);
   store.selectedItem = foundItem;
-  if (router.currentRoute.value.name !== 'Home') {
-    router.push({ name: 'Home' });
-  }
 }
 
 const nodes: TreeItem[] = computed(() => store.library);

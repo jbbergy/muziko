@@ -8,9 +8,9 @@ import { getLibraryHandler } from './handlers/getLibrary'
 import { setLibraryHandler } from './handlers/setLibrary'
 import { readDirectoryHandler } from './handlers/readDirectory'
 import { listFilesFromDirectoryHandler } from './handlers/listFilesFromDirectory'
-import { initSettings } from './utils/config';
+import { initSettings } from './managers/config';
 import { selectDirectoryHandler } from './handlers/selectDirectory';
-import { initLibrary } from './utils/library';
+import { initLibrary } from './managers/library';
 import { addDirectoryHandler } from './handlers/addDirectory';
 
 // needed in case process is undefined under Linux

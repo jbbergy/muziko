@@ -16,7 +16,7 @@ settingsData: {{ settingsData }}
 <script setup lang="ts">
 import { Settings } from '../types/nodes.type';
 import { reactive, watch } from 'vue';
-import { setSettings } from '../api/api';
+import { setSettings } from '../api/settings.api';
 import { useGlobalStore } from '../stores/global';
 
 const store = useGlobalStore();

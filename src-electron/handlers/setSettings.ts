@@ -1,6 +1,5 @@
 import { ipcMain } from 'electron'
-import { setSettings } from '../utils/config'
-import { Settings as MSetttings } from '../../src/types/nodes.type'
+import { setSettings } from '../managers/config'
 
 export function setSettingsHandler () {
   ipcMain.handle('myApi:setSettings', async (event, settings: string ) => {

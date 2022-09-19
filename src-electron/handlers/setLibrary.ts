@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron'
-import { setLibrary } from '../utils/library'
+import { setLibrary } from '../managers/library'
 import { TreeItem } from '../../src/types/nodes.type'
 
 export function setLibraryHandler () {

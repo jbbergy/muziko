@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron'
-import { addDirectory } from '../utils/library'
+import { addDirectory } from '../managers/library'
 
 export function addDirectoryHandler () {
   ipcMain.handle('myApi:addDirectory', async (event, directory: string ) => {

@@ -20,10 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { useGlobalStore } from 'src/stores/global';
 import { TreeItem } from 'src/types/nodes.type';
-import { listFilesFromDirectory } from 'src/api/api';
+import { listFilesFromDirectory } from 'src/api/files.api';
 
 const store = useGlobalStore();
 let selected = computed(() => store.selectedItem);
@@ -38,16 +38,22 @@ function selectAudioFile(file: TreeItem) {
   store.queue?.push(file);
 }
 
-watch(selected, async function (value: TreeItem) {
-  if (value?.isDir) {
-    const files = await listFilesFromDirectory(value?.path);
-    if (files?.length > 0) {
-      store.filesList = files;
-    } else {
-      store.filesList = null;
+watch(
+  selected,
+  async function (value: TreeItem) {
+    if (value?.isDir) {
+      const files = await listFilesFromDirectory(value?.path);
+      if (files?.length > 0) {
+        store.filesList = files;
+      } else {
+        store.filesList = null;
+      }
     }
+  },
+  {
+    immediate: true,
   }
-});
+);
 </script>
 
 <style lang="scss" scoped>

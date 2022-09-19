@@ -48,12 +48,11 @@
 </template>
 
 <script setup lang="ts">
-import { Howl, Howler } from 'howler';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, onBeforeUnmount } from 'vue';
 import { useGlobalStore } from 'src/stores/global';
+import { AudioController } from 'src/controllers/audio.controller';
 
-const howlerObj = ref();
-let isPaused = ref(false);
+let audioController: AudioController | null = null;
 let seek = ref(0);
 let duration = ref(0);
 let currentVolume = ref(0.3);
@@ -64,56 +63,62 @@ const progressBarValue = computed(() => {
   let result = 0;
   if (duration.value > 0) {
     result = (seek.value / duration.value) * 100;
-    console.log('result', result);
   }
   return result;
 });
 const fileToPlay = computed(() => store.fileToPlay);
+
+onBeforeUnmount(() => {
+  if (audioController) audioController.destroy();
+});
 
 watch(fileToPlay, () => {
   stop();
   play();
 });
 watch(currentVolume, (value) => {
-  Howler.volume(value);
+  audioController?.setVolume(value);
 });
 
 function setVolume(event) {
   currentVolume.value = event.target.value;
 }
+
 function stop() {
-  if (howlerObj.value?.playing() || isPaused.value === true) {
-    howlerObj.value.stop();
-    isPaused.value = false;
-  }
+  if (!audioController) return;
+  audioController.stop();
 }
+
 function pause() {
-  howlerObj.value.pause();
-  isPaused.value = true;
+  if (!audioController) return;
+  audioController.pause();
 }
+
 function play() {
-  if (isPaused.value === false) {
-    if (!!intervalId) {
-      clearInterval(intervalId);
-      intervalId = null;
-    }
-    howlerObj.value = new Howl({
-      src: [fileToPlay.value.path],
-      html5: Howler.usingWebAudio,
-    });
-    howlerObj.value.on('load', function (e) {
-      duration.value = howlerObj.value.duration();
-    });
-    howlerObj.value.on('end', function () {
-      console.log('TODO: Load next file');
-    });
-    intervalId = setInterval(() => {
-      seek.value = howlerObj.value?.seek();
-      console.log('seek', seek.value);
-    }, 100);
+  if (!!intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
   }
-  Howler.volume(currentVolume.value);
-  howlerObj.value.play();
-  isPaused.value = false;
+
+  if (!audioController?.getIsPaused()) {
+    audioController = new AudioController(fileToPlay.value?.path);
+  }
+
+  audioController.getInstance().on('load', function () {
+    if (!audioController) return;
+    duration.value = audioController.getInstance().duration();
+  });
+
+  audioController.getInstance().on('end', function () {
+    console.log('TODO: Load next file');
+  });
+
+  intervalId = setInterval(() => {
+    if (!audioController) return;
+    seek.value = audioController.getInstance()?.seek();
+  }, 100);
+
+  audioController.setVolume(currentVolume.value);
+  audioController.play();
 }
 </script>
