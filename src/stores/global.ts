@@ -13,7 +13,7 @@ export const useGlobalStore = defineStore('global', () => {
 
   const router = useRouter();
 
-  watch(selectedItem, (value, oldValue) => {
+  watch(selectedItem, () => {
     if (router.currentRoute.value.name !== 'Home') {
       router.push({ name: 'Home' });
     }

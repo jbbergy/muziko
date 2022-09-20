@@ -2,6 +2,8 @@ import { app, BrowserWindow, nativeTheme } from 'electron';
 import path from 'path';
 import os from 'os';
 
+import spotifyProviderInit from './managers/providers/spotify'
+
 import { getSettingsHandler } from './handlers/getSettings'
 import { setSettingsHandler } from './handlers/setSettings'
 import { getLibraryHandler } from './handlers/getLibrary'
@@ -34,6 +36,7 @@ readDirectoryHandler()
 listFilesFromDirectoryHandler()
 selectDirectoryHandler()
 addDirectoryHandler()
+spotifyProviderInit()
 
 let mainWindow: BrowserWindow | undefined;
 
