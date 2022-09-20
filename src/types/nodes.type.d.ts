@@ -1,3 +1,5 @@
+import { PROVIDERS } from 'app/src-electron/providers/providers.enum';
+
 export type TreeItem = {
   uuid: string
   isPlaying?: boolean
@@ -7,7 +9,8 @@ export type TreeItem = {
   name:string
   path: string
   mime?: string
-  children?: TreeItem[]|null
+  children?: TreeItem[] | null
+  provider?: PROVIDERS
 };
 
 export type Settings = {

@@ -28,7 +28,7 @@
           <img src="../assets/icons/btn-settings.svg" alt="settings button" />
         </button>
       </router-link>
-      <m-items-list />
+      <m-playlists />
       <button
         class="ds-button"
         @click="addFolder"
@@ -36,13 +36,15 @@
         Ajouter un dossier
       </button>
       <button
+        v-if="!currentUser"
         class="ds-button"
         @click="connectToSpotify"
       >
         Connecter Spotify
       </button>
       <template v-if="currentUser">
-        Connecté avec le compte {{ currentUser.id }}
+        Connecté avec le compte {{ currentUser.display_name }}<br>
+        <img :src="currentUser.images[0].url" alt="Spotify user image"/>
       </template>
     </q-drawer>
 
@@ -61,7 +63,7 @@
 import { PROVIDERS } from 'app/src-electron/providers/providers.enum';
 import { spotifyProviderInit } from 'app/src/api/providers/spotify.api';
 import { getTokens } from 'src/api/settings.api';
-import MItemsList from 'src/components/m-items-list/m-items-list.vue';
+import MPlaylists from 'src/components/m-playlists/m-playlists.vue';
 import MPlayer from 'src/components/m-player/m-player.vue';
 import { useGlobalStore } from 'src/stores/global';
 import { computed } from 'vue';

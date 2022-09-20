@@ -9,7 +9,7 @@
     </tr>
   </table>
   <pre>
-settingsData: {{ settingsData }}
+    store : {{ store.user }}
   </pre>
 </template>
 

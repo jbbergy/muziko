@@ -1,9 +1,12 @@
 import { Token } from 'app/src-electron/utils/tokens-manager';
 import { defineStore } from 'pinia';
+import { getLibrary, setLibrary } from 'src/api/library.api';
 import { getSpotifyUser, getSpotifyUserPlaylists } from 'src/api/providers/spotify.api';
 import { Settings, TreeItem } from 'src/types/nodes.type';
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router';
+import { v4 as uuidv4 } from 'uuid';
+import { PROVIDERS } from 'app/src-electron/providers/providers.enum';
 
 export const useGlobalStore = defineStore('global', () => {
   const selectedItem = ref<TreeItem | null>()
@@ -28,7 +31,22 @@ export const useGlobalStore = defineStore('global', () => {
     if (!tokens.value) tokens.value = [] as Token[]
     tokens.value.push(newToken)
     user.value = await getSpotifyUser()
-    await getSpotifyUserPlaylists()
+
+    const playlists = await getSpotifyUserPlaylists()
+    const currentLibrary = await getLibrary()
+
+    const rootNode:TreeItem = {
+      uuid: uuidv4(),
+      path: '',
+      label: PROVIDERS.SPOTIFY,
+      name: PROVIDERS.SPOTIFY,
+      isDir: false,
+      isSymLink: false,
+      children: playlists
+    }
+    currentLibrary.push(rootNode)
+    library.value = currentLibrary
+    await setLibrary(currentLibrary)
   }
 
   return {
