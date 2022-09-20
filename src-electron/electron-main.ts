@@ -2,18 +2,19 @@ import { app, BrowserWindow, nativeTheme } from 'electron';
 import path from 'path';
 import os from 'os';
 
-import spotifyProviderInit from './managers/providers/spotify'
-
-import { getSettingsHandler } from './handlers/getSettings'
-import { setSettingsHandler } from './handlers/setSettings'
-import { getLibraryHandler } from './handlers/getLibrary'
-import { setLibraryHandler } from './handlers/setLibrary'
-import { readDirectoryHandler } from './handlers/readDirectory'
-import { listFilesFromDirectoryHandler } from './handlers/listFilesFromDirectory'
 import { initSettings } from './managers/config';
-import { selectDirectoryHandler } from './handlers/selectDirectory';
 import { initLibrary } from './managers/library';
-import { addDirectoryHandler } from './handlers/addDirectory';
+
+import { getSettingsHandler } from './ipcManagers/getSettings'
+import { setSettingsHandler } from './ipcManagers/setSettings'
+import { getLibraryHandler } from './ipcManagers/getLibrary'
+import { setLibraryHandler } from './ipcManagers/setLibrary'
+import { readDirectoryHandler } from './ipcManagers/readDirectory'
+import { listFilesFromDirectoryHandler } from './ipcManagers/listFilesFromDirectory'
+import { selectDirectoryHandler } from './ipcManagers/selectDirectory';
+import { addDirectoryHandler } from './ipcManagers/addDirectory';
+import { spotifyProviderInitHandler } from './ipcManagers/providers/spotify/init.spotify';
+import { getTokensHandler } from './ipcManagers/getTokens';
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform();
@@ -36,7 +37,10 @@ readDirectoryHandler()
 listFilesFromDirectoryHandler()
 selectDirectoryHandler()
 addDirectoryHandler()
-spotifyProviderInit()
+getTokensHandler()
+
+// Spotify provider
+spotifyProviderInitHandler()
 
 let mainWindow: BrowserWindow | undefined;
 

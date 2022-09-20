@@ -35,6 +35,15 @@
       >
         Ajouter un dossier
       </button>
+      <button
+        class="ds-button"
+        @click="connectToSpotify"
+      >
+        Connecter Spotify
+      </button>
+      <template v-if="currentUser">
+        Connecté avec le compte {{ currentUser.id }}
+      </template>
     </q-drawer>
 
     <q-page-container class="ds-content-main">
@@ -49,12 +58,21 @@
 </template>
 
 <script setup lang="ts">
+import { PROVIDERS } from 'app/src-electron/providers/providers.enum';
+import { spotifyProviderInit } from 'app/src/api/providers/spotify.api';
+import { getTokens } from 'src/api/settings.api';
 import MItemsList from 'src/components/m-items-list/m-items-list.vue';
 import MPlayer from 'src/components/m-player/m-player.vue';
 import { useGlobalStore } from 'src/stores/global';
+import { computed } from 'vue';
 
 const store = useGlobalStore();
 const leftDrawerOpen = true;
+let intervalId: NodeJS.Timeout | null = null;
+
+const currentUser = computed(() => {
+  return store.user;
+});
 
 async function addFolder() {
   let dir = null;
@@ -67,5 +85,16 @@ async function addFolder() {
   if (dir) {
     store.library = await myApi.addDirectory(dir[0]);
   }
+}
+
+async function connectToSpotify() {
+  await spotifyProviderInit();
+  intervalId = setInterval(async () => {
+    const newToken = await getTokens(PROVIDERS.SPOTIFY);
+    if (newToken) {
+      store.addToken(newToken);
+      clearInterval(intervalId);
+    }
+  }, 300);
 }
 </script>

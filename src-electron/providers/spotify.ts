@@ -1,10 +1,13 @@
+
+import { PROVIDERS } from './providers.enum'
+import { TokensManager, Token } from '../utils/tokens-manager'
 import SpotifyWebApi from 'spotify-web-api-node'
 import Express from 'express'
 import opener from 'opener'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-export default function spotifyProviderInit() {
+export function spotifyProviderInit() {
 
   const SCOPES = [
     'ugc-image-upload',
@@ -60,21 +63,21 @@ export default function spotifyProviderInit() {
         spotifyApi.setAccessToken(access_token);
         spotifyApi.setRefreshToken(refresh_token);
   
-        console.log('access_token:', access_token);
-        console.log('refresh_token:', refresh_token);
+        const spotifyToken: Token = {
+          provider: PROVIDERS.SPOTIFY,
+          accessToken: access_token,
+          refreshToken: refresh_token
+        }
+        TokensManager.setToken(spotifyToken)
   
-        console.log(
-          `Sucessfully retreived access token. Expires in ${expires_in} s.`
-        );
-        res.send('Success! You can now <strong>close</strong> the window.<script type="javascript">window.close()</script>');
-  
+        res.send('Success! You can now <strong>close</strong> the window.');
+        
         setInterval(async () => {
           const data = await spotifyApi.refreshAccessToken();
           const access_token = data.body['access_token'];
-  
-          console.log('The access token has been refreshed!');
-          console.log('access_token:', access_token);
           spotifyApi.setAccessToken(access_token);
+          spotifyToken.accessToken = access_token
+          TokensManager.setToken(spotifyToken)
         }, expires_in / 2 * 1000);
       })
       .catch(error => {

@@ -1,6 +1,7 @@
 import path from 'path'
 import fse from 'fs-extra'
 import { Settings as MSetttings } from '../../src/types/nodes.type'
+import { Token, TokensManager } from '../utils/tokens-manager'
 
 const settingsPath = path.join(__dirname, '/settings.json')
 
@@ -17,7 +18,7 @@ export function initSettings() {
   } catch (warn) {
     console.warn('initConfig/readJsonSync warning', warn)
     fse.writeJsonSync(settingsPath, {
-      defaultPath: '' // 'H:\\MUSIQUE'
+      defaultPath: ''
     })
   }
 }
@@ -38,5 +39,14 @@ export async function setSettings(settings: MSetttings): Promise<boolean> {
   } catch (error) {
     return false
     console.error('setSettings error', error)
+  }
+}
+
+export async function getTokens(providerName: string): Promise<Token | null> {
+  try {
+    return TokensManager.getTokenByProvider(providerName) || null
+  } catch (error) {
+    return null
+    console.error('getTokens error', error)
   }
 }
