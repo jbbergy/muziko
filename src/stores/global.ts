@@ -1,12 +1,13 @@
 import { Token } from 'app/src-electron/utils/tokens-manager';
 import { defineStore } from 'pinia';
 import { getLibrary, setLibrary } from 'src/api/library.api';
-import { getSpotifyUser, getSpotifyUserPlaylists } from 'src/api/providers/spotify.api';
+import { getSpotifyDevices, getSpotifyUser, getSpotifyUserPlaylists } from 'src/api/providers/spotify.api';
 import { Settings, TreeItem } from 'src/types/nodes.type';
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router';
 import { v4 as uuidv4 } from 'uuid';
 import { PROVIDERS } from 'app/src-electron/providers/providers.enum';
+import SpotifyPlayer from 'spotify-web-playback';
 
 export const useGlobalStore = defineStore('global', () => {
   const selectedItem = ref<TreeItem | null>()
@@ -47,6 +48,25 @@ export const useGlobalStore = defineStore('global', () => {
     currentLibrary.push(rootNode)
     library.value = currentLibrary
     await setLibrary(currentLibrary)
+
+    const token = newToken.accessToken;
+    console.log('token', token)
+
+    const devices = await getSpotifyDevices()
+    console.log('devices', devices)
+
+    const uri = 'spotify:track:1KabKBb6Zgzv5dm1zq9YD8';
+    console.log('uri', uri)
+  
+    const spotify = new SpotifyPlayer('Muziko player');
+    console.log('spotify', spotify)
+  
+    const isConnected = await spotify.connect(token);
+    console.log('connect', isConnected)
+  
+    spotify.play(uri);
+    console.log('play')
+
   }
 
   return {

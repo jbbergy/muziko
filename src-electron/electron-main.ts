@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme } from 'electron';
+import { app, BrowserWindow, components, nativeTheme } from 'electron';
 import path from 'path';
 import os from 'os';
 
@@ -44,6 +44,10 @@ spotifyProviderInitHandler()
 
 let mainWindow: BrowserWindow | undefined;
 
+app.commandLine.appendSwitch('widevine-cdm-path', '../widevinecdm.dll')
+// The version of plugin can be got from `chrome://components` page in Chrome.
+app.commandLine.appendSwitch('widevine-cdm-version', '4.10.2449.0')
+
 function createWindow() {
   /**
    * Initial window options
@@ -79,9 +83,14 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = undefined;
   });
+
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(async () => {
+  await components.whenReady();
+  console.log('components ready:', components.status());
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (platform !== 'darwin') {

@@ -26,6 +26,7 @@
     "quasar": "^2.6.0",
     "request": "^2.88.2",
     "spotify-web-api-node": "^5.0.2",
+    "spotify-web-playback": "^1.4.0",
     "uuidv4": "^6.2.13",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0"
@@ -37,7 +38,7 @@
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.2",
-    "electron": "^20.1.0",
+    "electron": "github:castlabs/electron-releases#v20.0.0+wvcus",
     "electron-packager": "^15.5.2",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",

@@ -24,6 +24,8 @@ import { computed, watch } from 'vue';
 import { useGlobalStore } from 'src/stores/global';
 import { TreeItem } from 'src/types/nodes.type';
 import { listFilesFromDirectory } from 'src/api/files.api';
+import { PROVIDERS } from 'app/src-electron/providers/providers.enum';
+import { getSpotifyTracksFromPlaylist } from 'src/api/providers/spotify.api';
 
 const store = useGlobalStore();
 let selected = computed(() => store.selectedItem);
@@ -41,13 +43,18 @@ function selectAudioFile(file: TreeItem) {
 watch(
   selected,
   async function (value: TreeItem) {
-    if (value?.isDir) {
-      const files = await listFilesFromDirectory(value?.path);
-      if (files?.length > 0) {
-        store.filesList = files;
-      } else {
-        store.filesList = null;
+    if (value?.path !== '' && !value?.provider) {
+      if (value?.isDir) {
+        const files = await listFilesFromDirectory(value?.path);
+        if (files?.length > 0) {
+          store.filesList = files;
+        } else {
+          store.filesList = null;
+        }
       }
+    } else if (value.provider === PROVIDERS.SPOTIFY) {
+      const files = await getSpotifyTracksFromPlaylist(value?.uuid);
+      console.log('files', files);
     }
   },
   {

@@ -24,7 +24,7 @@ export async function getSpotifyUser() {
     })
     return user?.data
   } catch (error) {
-    console.error('api/getUser error', error)
+    console.error('api/getSpotifyUser error', error)
   }
 }
 
@@ -55,7 +55,7 @@ export async function getSpotifyUserPlaylists():Promise<TreeItem[]> {
         allPlaylists = [...allPlaylists, ...playlists.data.items]
       }
     } catch (error) {
-      console.error('api/getUser error', error)
+      console.error('api/getSpotifyUserPlaylists error', error)
     }
   } while (nbPlaylists === 50)
   
@@ -71,5 +71,43 @@ export async function getSpotifyUserPlaylists():Promise<TreeItem[]> {
     }
     return playlist
   })
+}
+
+export async function getSpotifyTracksFromPlaylist(playlistId) {
+  console.log('getSpotifyTracksFromPlaylist', playlistId)
+  const store = useGlobalStore()
+  const accessToken = store.tokens?.find((t) => t.provider === PROVIDERS.SPOTIFY)?.accessToken
+  const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`
+  try {
+    const tracks = await api.get(url, {
+      headers: {
+        accept: 'Accept: application/json',
+        contentType: 'application/json',
+        authorization: `Bearer ${accessToken}`
+      }
+    })
+    return tracks?.data
+  } catch (error) {
+    console.error('api/getSpotifyTracksFromPlaylist error', error)
+  }
+}
+
+export async function getSpotifyDevices() {
+  console.log('getSpotifyDevices')
+  const store = useGlobalStore()
+  const accessToken = store.tokens?.find((t) => t.provider === PROVIDERS.SPOTIFY)?.accessToken
+  const url = 'https://api.spotify.com/v1/me/player/devices'
+  try {
+    const devices = await api.get(url, {
+      headers: {
+        accept: 'Accept: application/json',
+        contentType: 'application/json',
+        authorization: `Bearer ${accessToken}`
+      }
+    })
+    return devices?.data
+  } catch (error) {
+    console.error('api/getSpotifyDevices error', error)
+  }
 }
 
