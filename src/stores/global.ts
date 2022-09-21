@@ -52,21 +52,27 @@ export const useGlobalStore = defineStore('global', () => {
     const token = newToken.accessToken;
     console.log('token', token)
 
-    const devices = await getSpotifyDevices()
-    console.log('devices', devices)
-
-    const uri = 'spotify:track:1KabKBb6Zgzv5dm1zq9YD8';
+    const uri = 'spotify:track:3XUkRMMrrn7x7OQAQJUCF4';
     console.log('uri', uri)
   
-    const spotify = new SpotifyPlayer('Muziko player');
+    const spotify = new SpotifyPlayer('Muziko player', 0.5);
     console.log('spotify', spotify)
   
     const isConnected = await spotify.connect(token);
-    console.log('connect', isConnected)
-  
-    spotify.play(uri);
-    console.log('play')
 
+    console.log('connect', isConnected)
+    
+    let deviceFound = null
+    do {
+      const devices = await getSpotifyDevices()
+      console.log('devices', devices)
+      if (devices.devices.findIndex((d) => d.name === 'Muziko player') >= 0) {
+        deviceFound = devices.devices.find((d) => d.name === 'Muziko player')
+      } 
+    } while (!deviceFound)
+    console.log('deviceFound', deviceFound)
+    await spotify.play(uri);
+    console.log('play', uri)
   }
 
   return {
