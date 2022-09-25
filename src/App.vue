@@ -1,15 +1,6 @@
 <template>
-  <router-view />
+  <header>Muziko</header>
+  <nav>nav</nav>
+  <router-view></router-view>
+  <footer>footer</footer>
 </template>
-
-<script setup lang="ts">
-import { onMounted } from 'vue';
-import { getSettings } from './api/settings.api';
-import { useGlobalStore } from './stores/global';
-
-const store = useGlobalStore();
-
-onMounted(async () => {
-  store.settings = await getSettings();
-});
-</script>

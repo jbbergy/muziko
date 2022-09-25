@@ -1,47 +1,26 @@
 {
   "name": "muziko",
-  "version": "0.0.1",
-  "description": "a multi-platform music player",
-  "productName": "muziko",
-  "author": "Jean-Baptiste BERGY",
   "private": true,
+  "version": "0.0.1",
+  "author": {
+    "name": "Jean-Baptiste BERGY",
+    "email": "jb.bergy@gmail.com"
+  },
+  "main": "server/main.js",
   "scripts": {
-    "build": "quasar build -m electron",
-    "dev": "quasar dev -m electron",
-    "lint": "eslint --ext .js,.ts,.vue ./",
-    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
-    "test": "echo \"No test specified\" && exit 0"
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "start": "yarn build && electron ."
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
-    "fs-extra": "^10.1.0",
-    "howler": "^2.2.3",
-    "mime-types": "^2.1.35",
-    "pinia": "^2.0.11",
-    "quasar": "^2.6.0",
-    "request": "^2.88.2",
-    "uuidv4": "^6.2.13",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0"
+    "vue": "^3.2.37"
   },
   "devDependencies": {
-    "@quasar/app-vite": "^1.0.0",
-    "@types/howler": "^2.2.7",
-    "@types/node": "^12.20.55",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
-    "autoprefixer": "^10.4.2",
-    "electron": "^20.1.0",
-    "electron-packager": "^15.5.2",
-    "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "prettier": "^2.5.1",
-    "typescript": "^4.5.4"
-  },
-  "engines": {
-    "node": "^18 || ^16 || ^14.19",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
+    "@vitejs/plugin-vue": "^3.1.0",
+    "electron": "^20.2.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0",
+    "vue-tsc": "^0.40.4"
   }
 }
