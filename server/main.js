@@ -10,6 +10,7 @@ const createWindow = () => {
     }
   })
   win.maximize()
+  win.removeMenu()
   win.loadFile('dist/index.html')
 }
 
