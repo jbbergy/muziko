@@ -17,6 +17,10 @@ import MButton from './m-button.vue'
       height: 2rem;
       border-radius: 999px;
       color:$font-color-dark;
+
+      &:hover {
+        transform: scale(1.06);
+      }
     }
   }
 }

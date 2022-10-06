@@ -1,18 +1,18 @@
 <template>
   <div class="main-container">
-  <main-header></main-header>
+    <main-header></main-header>
     <sidebar></sidebar>
     <div class="main-container__main-view">
       <router-view></router-view>
     </div>
-    <main-player></main-player>
+    <main-footer></main-footer>
   </div>
 </template>
 
 <script setup lang="ts">
   import Sidebar from './components/sidebar/sidebar.vue'
   import MainHeader from './components/main-header/main-header.vue'
-  import MainPlayer from './components/main-player/main-player.vue'
+  import MainFooter from './components/main-footer/main-footer.vue'
 </script>
 
 <style lang="scss">
@@ -25,6 +25,8 @@ body {
 }
 
 #app {
+  font-family: Helvetica Neue,helvetica,arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic;
+  color: $font-color-light;
   width: 100vw;
   height: 100vh;
   background: $dark;
