@@ -1,5 +1,11 @@
 <template>
-  <m-button class="m-button-control m-button-control--primary">
+  <m-button
+    :class="[
+      'm-button m-button--secondary',
+      props.isActive && 'm-button--is-active'
+    ]"
+    @click="onClick"
+  >
     <slot></slot>
   </m-button>
 </template>
@@ -23,17 +29,14 @@ function onClick() {
 
 <style lang="scss" scoped>
 .m-button {
-  &-control {
-    &--primary {
-      background-color: $background-light;
-      width: 2rem;
-      height: 2rem;
-      border-radius: 999px;
-      color:$font-color-dark;
+  &--secondary {
+    color: $font-color-light;
+    background-color: transparent;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
 
-      &:hover {
-        transform: scale(1.06);
-      }
+    &:hover {
+      color: darken($font-color-light, 20%);
     }
   }
 }

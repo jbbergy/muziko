@@ -9,18 +9,28 @@
   "main": "server/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vite build",
+    "build:ts": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "start": "yarn build && electron ."
+    "start": "yarn build && electron .",
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview"
   },
   "dependencies": {
+    "@electron-toolkit/preload": "^1.0.2",
+    "@electron-toolkit/utils": "^1.0.2",
+    "lowdb": "^3.0.0",
+    "uuid": "^9.0.0",
     "vite-svg-loader": "^3.6.0",
     "vue": "^3.2.37",
     "vue-router": "4"
   },
   "devDependencies": {
+    "@histoire/plugin-vue": "^0.11.3",
     "@vitejs/plugin-vue": "^3.1.0",
     "electron": "^20.2.0",
+    "histoire": "^0.11.3",
     "sass": "^1.55.0",
     "typescript": "^4.6.4",
     "vite": "^3.1.0",

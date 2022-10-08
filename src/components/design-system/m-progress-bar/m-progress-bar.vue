@@ -19,8 +19,9 @@ import { ref } from 'vue'
 
 const currentTime = ref(0)
 
-function setTime(event: any) {
+function setTime(event: any):MouseEvent {
   currentTime.value = event.target.value
+  return {} as MouseEvent
 }
 </script>
 
