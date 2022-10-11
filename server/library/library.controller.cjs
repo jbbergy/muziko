@@ -62,6 +62,10 @@ const fetchAll = () => {
 */
 const create = async (libraryItem) => {
   if (!isDbLibraryInitialized()) return null
+
+  // TODO: get sub directories and directory data
+  // before push
+
   db.data.library.push(libraryItem)
 
   try {

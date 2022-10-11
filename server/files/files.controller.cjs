@@ -1,18 +1,18 @@
 // TODO: manage audio files
 // load directory and sub directories, load files from directory, read metadata
 
-import { v4 as uuidv4 } from 'uuid';
-import path from 'path'
-import fse from 'fs-extra'
-import mime from 'mime-types'
-import { app, dialog, BrowserWindow } from 'electron'
+const { v4 } = require('uuid')
+const path = require('path')
+const fse = require('fs-extra')
+const mime = require('mime-types')
+const { app, dialog, BrowserWindow } = require('electron')
 
 
 /*
 * Open a dialog window to select a directory
 * @return {string} filePaths - The path of the selected directory
 */
-export async function selectDirectory() {
+const selectDirectory = async () => {
   const options = {
     properties: ['openDirectory']
   }
@@ -39,7 +39,7 @@ export async function selectDirectory() {
 *   isSymLink: {boolean} - is a sym link,
 * }]
 */
-export async function readDirectory(directory) {
+const readDirectory = async (directory) => {
   const directoryTree = []
   try {
     const files = await fse.readdir(directory)
@@ -83,7 +83,7 @@ export async function readDirectory(directory) {
 *   isSymLink: {boolean} - is a sym link,
 * }]
 */
-export async function listFilesFromDirectory(directory) {
+const listFilesFromDirectory = async (directory) => {
   const filesList = []
   try {
     const files = await fse.readdir(directory)
@@ -113,4 +113,11 @@ export async function listFilesFromDirectory(directory) {
     console.error(error)
   }
   return filesList
+}
+
+
+module.exports = {
+  selectDirectory,
+  readDirectory,
+  listFilesFromDirectory
 }

@@ -1,15 +1,33 @@
 <template>
   <nav class="sidebar">
-    <m-button-secondary>Ajouter un dossier</m-button-secondary>
+    <m-button-secondary @click="addFolder">Ajouter un dossier</m-button-secondary>
     <playlists />
   </nav>
 </template>
 
 <script lang="ts" setup>
+import { selectDirectory } from '../../api/files'
+import { create as LibraryCreate, getLibrary } from '../../api/library'
 import MButtonSecondary from '../design-system/m-button/m-button.secondary.vue'
 import Playlists from '../playlists/playlists.vue'
 
 const name = "Sidebar";
+
+async function addFolder() {
+  let dir = null;
+  try {
+    dir = await selectDirectory();
+    console.log('addFolder/selectDirectory', dir)
+  } catch (error) {
+    console.error('addFolder error', error);
+  }
+  if (dir) {
+    await LibraryCreate(dir[0]);
+    const lib = await getLibrary()
+    console.log('addFolder/getLibrary', lib)
+  }
+}
+
 </script>
 
 

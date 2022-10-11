@@ -2,6 +2,7 @@ const path = require('path')
 const { app, BrowserWindow } = require('electron')
 const { initDbLibrary } = require('./library/library.controller.cjs')
 const { initLibraryIPCHandlers } = require('./library/library.handler.cjs')
+const { initFilesIPCHandlers } = require('./files/files.handler.cjs')
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -24,6 +25,7 @@ app.whenReady().then(async () => {
 
   // init IPC handlers
   initLibraryIPCHandlers()
+  initFilesIPCHandlers()
 
   await initDbLibrary()
 

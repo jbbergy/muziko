@@ -10,6 +10,15 @@ contextBridge.exposeInMainWorld(
   }
 )
 
+contextBridge.exposeInMainWorld(
+  'filesApi',
+  {
+    selectDirectory: async () => await ipcRenderer.invoke('filesApi:selectDirectory'),
+    readDirectory: async (payload) => await ipcRenderer.invoke('filesApi:readDirectory', payload),
+    listFilesFromDirectory: async (payload) => await ipcRenderer.invoke('filesApi:listFilesFromDirectory', payload),
+  }
+)
+
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector)
