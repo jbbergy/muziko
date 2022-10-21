@@ -10,6 +10,9 @@ import { selectDirectory } from '../../api/files'
 import { create as LibraryCreate, getLibrary } from '../../api/library'
 import MButtonSecondary from '../design-system/m-button/m-button.secondary.vue'
 import Playlists from '../playlists/playlists.vue'
+import { useLibraryStore } from '../../stores/library/library'
+
+const libraryStore = useLibraryStore()
 
 const name = "Sidebar";
 
@@ -17,14 +20,12 @@ async function addFolder() {
   let dir = null;
   try {
     dir = await selectDirectory();
-    console.log('addFolder/selectDirectory', dir)
   } catch (error) {
     console.error('addFolder error', error);
   }
   if (dir) {
-    await LibraryCreate(dir[0]);
-    const lib = await getLibrary()
-    console.log('addFolder/getLibrary', lib)
+    await LibraryCreate(dir[0])
+    await libraryStore.refreshLibrary()
   }
 }
 

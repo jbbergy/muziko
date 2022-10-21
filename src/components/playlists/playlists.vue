@@ -1,24 +1,18 @@
 <template>
   <div class="playlists">
-    <div
-      v-for="library in libraries"
-      :key="library.id"
-      class="playlist__item"
-    >
-      {{ library.id }} - {{ library.label }}
-    </div>
+    <m-tree :library="libraryStore.library" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { getLibrary } from '../../api/library'
-import { onMounted, ref } from 'vue'
-
-const libraries = ref()
+import { onMounted, computed } from 'vue'
+import { useLibraryStore } from '../../stores/library/library'
+import MTree from '../design-system/m-tree/m-tree.vue'
+const libraryStore = useLibraryStore()
 
 onMounted(async () => {
   try {
-    libraries.value = await getLibrary()
+    await libraryStore.refreshLibrary()
   } catch (error) {
     console.error('playlists onMounted error', error)
   }

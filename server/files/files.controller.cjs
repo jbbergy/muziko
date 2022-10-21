@@ -1,6 +1,3 @@
-// TODO: manage audio files
-// load directory and sub directories, load files from directory, read metadata
-
 const { v4 } = require('uuid')
 const path = require('path')
 const fse = require('fs-extra')
@@ -19,8 +16,8 @@ const selectDirectory = async () => {
 
   if (!app.isReady) return
 
-  const dialogWindow = new BrowserWindow({width: 800, height: 600})
-  
+  const dialogWindow = new BrowserWindow({ width: 800, height: 600 })
+
   const result = await dialog.showOpenDialog(dialogWindow, options)
   dialogWindow.close()
 
@@ -44,7 +41,7 @@ const readDirectory = async (directory) => {
   try {
     const files = await fse.readdir(directory)
     for (const file of files) {
-      
+
       const pathToFile = path.join(directory, file)
       const stat = await fse.stat(pathToFile)
 
@@ -52,7 +49,7 @@ const readDirectory = async (directory) => {
       const isSymbolicLink = stat.isSymbolicLink()
 
       const retVal = {
-        uuid: uuidv4(),
+        uuid: v4(),
         path: pathToFile,
         label: file,
         name: file,
@@ -66,7 +63,7 @@ const readDirectory = async (directory) => {
       }
     }
   } catch (error) {
-    console.error(error)
+    console.error('File readDirectory error', error)
   }
   return directoryTree
 }
@@ -88,7 +85,7 @@ const listFilesFromDirectory = async (directory) => {
   try {
     const files = await fse.readdir(directory)
     for (const file of files) {
-      
+
       const pathToFile = path.join(directory, file)
       const stat = await fse.stat(pathToFile)
 
@@ -98,7 +95,7 @@ const listFilesFromDirectory = async (directory) => {
 
       if (!isDirectory && mimeType.toString().includes('audio')) {
         const retVal = {
-          uuid: uuidv4(),
+          uuid: v4(),
           path: pathToFile,
           label: file,
           name: file,

@@ -1,6 +1,8 @@
 const { v4 } = require('uuid')
+const fse = require('fs-extra')
 const path = require('path')
 const { app } = require('electron')
+const { readDirectory } = require('../files/files.controller.cjs')
 
 
 const libraryPath = path.join(app.getPath('userData'), '/library.db.json')
@@ -13,7 +15,7 @@ var db = null
 */
 const isDbLibraryInitialized = () => {
   return (db?.data?.library !== null)
-} 
+}
 
 /*
 * initialize the database by creating library.db.json file
@@ -21,7 +23,7 @@ const isDbLibraryInitialized = () => {
 * @return {boolean} - true if is initialized, false if not
 */
 const initDbLibrary = async () => {
-  console.log('sync library to', libraryPath)
+  console.info('sync library to', libraryPath)
   const lowdb = await import('lowdb')
   adapter = new lowdb.JSONFile(libraryPath)
   db = new lowdb.Low(adapter)
@@ -34,7 +36,7 @@ const initDbLibrary = async () => {
   }
 
   if (!db.data?.library) {
-    db.data ||=  { library: [] }
+    db.data ||= { library: [] }
   }
 
   try {
@@ -63,10 +65,30 @@ const fetchAll = () => {
 const create = async (libraryItem) => {
   if (!isDbLibraryInitialized()) return null
 
-  // TODO: get sub directories and directory data
-  // before push
+  let newTree = null
+  try {
+    newTree = await readDirectory(libraryItem)
+  } catch (error) {
+    console.error('library create error', error)
+  }
 
-  db.data.library.push(libraryItem)
+  const basename = path.basename(libraryItem)
+  const stat = fse.statSync(libraryItem)
+
+  const isDirectory = stat.isDirectory()
+  const isSymbolicLink = stat.isSymbolicLink()
+
+  const retVal = {
+    uuid: v4(),
+    path: libraryItem,
+    label: basename,
+    name: basename,
+    isDir: isDirectory,
+    isSymLink: isSymbolicLink,
+    children: newTree
+  }
+
+  db.data.library.push(retVal)
 
   try {
     await db.write()
