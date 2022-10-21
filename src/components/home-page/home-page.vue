@@ -1,13 +1,9 @@
 <template>
   <div class="main-view">
-    mainview
-    {{ audioStore.currentPlaylist }}
+    <files-list />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useAudioStore } from "../../stores/audio/audio";
-
-const audioStore = useAudioStore();
-
+import FilesList from '../files-list/files-list.vue'
 </script>
