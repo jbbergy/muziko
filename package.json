@@ -13,7 +13,7 @@
     "build": "vite build",
     "build:ts": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "start": "yarn build && electron .",
+    "start": "set NODE_ENV=dev&& yarn build && electron .",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
     "story:preview": "histoire preview",

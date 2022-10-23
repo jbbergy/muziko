@@ -15,9 +15,11 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preload.js')
     }
   })
-  win.maximize()
   win.removeMenu()
-  win.webContents.openDevTools();
+  if (process.env.NODE_ENV === 'dev') {
+    win.maximize()
+    win.webContents.openDevTools();
+  }
   win.loadFile('dist/index.html')
 }
 
