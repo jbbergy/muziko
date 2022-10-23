@@ -7,12 +7,14 @@ export const useAudioStore = defineStore('audio', () => {
   const selectedFile = ref()
   const currentFile = ref()
   const currentInstance = ref()
+  const currentVolume = ref(0.3)
 
   return {
     selectedFolder,
     currentPlaylist,
     selectedFile,
     currentFile,
-    currentInstance
+    currentInstance,
+    currentVolume
   }
 })

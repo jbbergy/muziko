@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onBeforeUnmount, watch } from "vue";
+import { ref, computed, onBeforeUnmount, watch, onMounted } from "vue";
 import MButtonCtrlPrimary from "../design-system/m-button/m-button.control.primary.vue";
 import MButtonCtrlSecondary from "../design-system/m-button/m-button.control.secondary.vue";
 import ButtonPlaySvg from "../../assets/svg/icons/play.svg";
@@ -44,10 +44,33 @@ const isPlay = ref(false);
 const isRepeat = ref(false);
 const seek = ref(0);
 const duration = ref(0);
-const currentVolume = ref(0.3);
 const isPlaying = ref(false);
 // let audioController: AudioController | null = null;
 let intervalId: NodeJS.Timeout | null = null;
+
+onMounted(() => {
+  document.addEventListener('keyup', ({ key }) => {
+    switch (key) {
+      case 'MediaTrackNext': 
+        onClickNext()
+        break;
+      case 'MediaTrackPrevious': 
+        onClickPrev()
+        break;
+      case 'MediaPlayPause': 
+        if (isPlaying) {
+          pause()
+        } else {
+          play()
+        }
+        break;
+    }
+  })
+})
+
+onBeforeUnmount(() => {
+  if (audioStore.currentInstance) audioStore.currentInstance.destroy();
+});
 
 const progressBarValue = computed(() => {
   let result = 0;
@@ -58,25 +81,14 @@ const progressBarValue = computed(() => {
 });
 const fileToPlay = computed(() => audioStore.currentFile);
 
-onBeforeUnmount(() => {
-  if (audioStore.currentInstance) audioStore.currentInstance.destroy();
-});
-
 watch(fileToPlay, () => {
   stop();
   play();
-});
-watch(currentVolume, (value) => {
-  audioStore.currentInstance?.setVolume(value);
 });
 
 function onSeek(value) {
   audioStore.currentInstance?.seek(value);
   seek.value = value
-}
-
-function setVolume(volumeElem) {
-  currentVolume.value = volumeElem.target.value;
 }
 
 function stop() {
@@ -102,14 +114,14 @@ function play() {
     duration.value = audioStore.currentInstance.getInstance().duration();
   });
   audioStore.currentInstance.getInstance().on("end", function () {
-    console.log("TODO: Load next file");
+    onClickNext()
   });
   intervalId = setInterval(() => {
     if (!audioStore.currentInstance) return;
     isPlaying.value = audioStore.currentInstance.getIsPlaying()
     seek.value = audioStore.currentInstance.getInstance()?.seek() || 0;
   }, 100);
-  audioStore.currentInstance.setVolume(currentVolume.value);
+  audioStore.currentInstance.setVolume(audioStore.currentVolume);
   audioStore.currentInstance.play();
 }
 
@@ -132,7 +144,6 @@ function onClickPrev() {
 
   if (isShuffle.value) {
     newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length)
-    console.log('next ', newIndex)
   }
 
   if (newIndex > -1) {
@@ -151,7 +162,10 @@ function onClickNext() {
 
   if (isShuffle.value) {
     newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length)
-    console.log('next ', newIndex)
+  }
+
+  if (newIndex >= audioStore.currentPlaylist.length) {
+    newIndex = 0
   }
 
   if (newIndex < audioStore.currentPlaylist.length) {

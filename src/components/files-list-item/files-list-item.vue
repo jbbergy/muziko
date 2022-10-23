@@ -18,7 +18,7 @@ import ButtonPlaySmallSvg from "../../assets/svg/icons/play-small.svg";
 import { computed } from "vue";
 
 const tagTrackname = computed(() => {
-  return props.item.metadata?.title || props.item.name;
+  return props.item.metadata?.title || props.item.label;
 });
 
 const tagArtist = computed(() => {

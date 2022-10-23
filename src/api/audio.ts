@@ -6,11 +6,13 @@ export class AudioController {
   _isPlaying = false
   _instanceId: number | null = null
 
-  constructor(file:string) {
-    this._howlInstance = new Howl({
+  constructor(file: string) {
+    const options = {
       src: file,
-      html5: Howler.usingWebAudio,
-    })
+      html5: Howler.usingWebAudio
+    }
+
+    this._howlInstance = new Howl(options)
   }
 
   destroy() {
@@ -29,7 +31,7 @@ export class AudioController {
     return this._isPlaying
   }
 
-  setVolume(volume = 30) {
+  setVolume(volume = 0.3) {
     Howler.volume(volume);
   }
 
@@ -65,7 +67,6 @@ export class AudioController {
 
   loop(loop) {
     if (this._instanceId) {
-      console.log('loop', loop)
       this._howlInstance?.loop(loop, this._instanceId)
     }
   }

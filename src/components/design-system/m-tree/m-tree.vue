@@ -13,6 +13,7 @@
           'status-indicator',
           openedItems[libraryItem.uuid] && 'status-indicator--open'
           ]"
+          @click="selectFolder(libraryItem)"
         />
         <span
           class="m-tree__list-itemtext"
@@ -59,7 +60,6 @@ async function selectFolder(folder) {
     }
   })
   openedItems.value[folder.uuid] = props.parentFolderId || true
-
   audioStore.selectedFolder = folder
 
   try {

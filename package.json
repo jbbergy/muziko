@@ -1,5 +1,6 @@
 {
   "name": "muziko",
+  "description": "An audio files player",
   "private": true,
   "version": "0.0.1",
   "author": {
@@ -15,14 +16,19 @@
     "start": "yarn build && electron .",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
-    "story:preview": "histoire preview"
+    "story:preview": "histoire preview",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^1.0.2",
     "@electron-toolkit/utils": "^1.0.2",
     "@types/howler": "^2.2.7",
+    "electron-squirrel-startup": "^1.0.0",
+    "fs-extra": "10.1.0",
     "howler": "^2.2.3",
     "lowdb": "^3.0.0",
+    "mime-types": "^2.1.35",
     "node-id3": "^0.2.3",
     "pinia": "^2.0.23",
     "uuid": "^9.0.0",
@@ -31,6 +37,11 @@
     "vue-router": "4"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.67",
+    "@electron-forge/maker-deb": "^6.0.0-beta.67",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.67",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.67",
+    "@electron-forge/maker-zip": "^6.0.0-beta.67",
     "@histoire/plugin-vue": "^0.11.3",
     "@vitejs/plugin-vue": "^3.1.0",
     "electron": "^20.2.0",
@@ -39,5 +50,32 @@
     "typescript": "^4.6.4",
     "vite": "^3.1.0",
     "vue-tsc": "^0.40.4"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "muziko"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }

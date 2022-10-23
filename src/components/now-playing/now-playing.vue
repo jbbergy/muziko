@@ -4,11 +4,26 @@
       <img src="../../assets/img/cover.jfif" alt="Cover" />
     </div>
     <div class="now-playing__title">
-      <div class="now-playing__main-title">In Between</div>
-      <div class="now-playing__subtitle">Enluv, Molly McPhaul</div>
+      <div class="now-playing__main-title">{{ trackTitle }}</div>
+      <div class="now-playing__subtitle">{{ trackArtist }}</div>
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useAudioStore } from '../../stores/audio/audio'
+
+const audioStore = useAudioStore()
+
+const trackTitle = computed(() => {
+  return audioStore.currentFile?.metadata?.title || audioStore.currentFile?.label
+})
+const trackArtist = computed(() => {
+  return audioStore.currentFile?.metadata?.artist
+})
+
+</script>
 
 <style lang="scss">
   .now-playing {

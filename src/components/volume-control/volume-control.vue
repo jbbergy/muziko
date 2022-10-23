@@ -10,9 +10,10 @@ import { useAudioStore } from "../../stores/audio/audio";
 
 const audioStore = useAudioStore();
 
-function onInput(event) {
+function onInput(volume) {
   if (audioStore.currentInstance) {
-    audioStore.currentInstance.setVolume(event);
+    audioStore.currentVolume = volume
+    audioStore.currentInstance.setVolume(audioStore.currentVolume);
   }
 }
 

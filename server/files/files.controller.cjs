@@ -108,7 +108,7 @@ const listFilesFromDirectory = async (directory) => {
         const retVal = {
           uuid: v4(),
           path: pathToFile,
-          label: file,
+          label: file.replace(/\.[^/.]+$/, ""),
           name: file,
           isDir: isDirectory,
           isSymLink: false,
