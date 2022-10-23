@@ -126,6 +126,18 @@ function onClickRepeat() {
 
 function onClickPrev() {
   isPrev.value = true;
+  const currentindex = audioStore.currentPlaylist.findIndex((item) => item.uuid === audioStore.currentFile.uuid)
+  
+  let newIndex = currentindex - 1
+
+  if (isShuffle.value) {
+    newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length)
+    console.log('next ', newIndex)
+  }
+
+  if (newIndex > -1) {
+    audioStore.currentFile = audioStore.currentPlaylist[newIndex]
+  }
   setTimeout(() => {
     isPrev.value = false;
   }, 500);
@@ -133,9 +145,21 @@ function onClickPrev() {
 
 function onClickNext() {
   isNext.value = true;
+  const currentindex = audioStore.currentPlaylist.findIndex((item) => item.uuid === audioStore.currentFile.uuid)
+  
+  let newIndex = currentindex + 1
+
+  if (isShuffle.value) {
+    newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length)
+    console.log('next ', newIndex)
+  }
+
+  if (newIndex < audioStore.currentPlaylist.length) {
+    audioStore.currentFile = audioStore.currentPlaylist[newIndex]
+  }
   setTimeout(() => {
     isNext.value = false;
-  }, 500);
+  }, 300);
 }
 </script>
 
