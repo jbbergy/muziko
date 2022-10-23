@@ -118,7 +118,10 @@ function onClickShuffle() {
 }
 
 function onClickRepeat() {
-  isRepeat.value = !isRepeat.value;
+  if (audioStore.currentInstance) {
+    isRepeat.value = !isRepeat.value;
+    audioStore.currentInstance.loop(isRepeat.value)
+  }
 }
 
 function onClickPrev() {

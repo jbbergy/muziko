@@ -59,8 +59,14 @@ export class AudioController {
 
   seek(seekTo) {
     if (this._instanceId) {
-      console.log('seek', seekTo)
       this._howlInstance?.seek(seekTo, this._instanceId)
+    }
+  }
+
+  loop(loop) {
+    if (this._instanceId) {
+      console.log('loop', loop)
+      this._howlInstance?.loop(loop, this._instanceId)
     }
   }
 } 
