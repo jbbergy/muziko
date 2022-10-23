@@ -43,7 +43,7 @@ const elapsedTime = computed(() => {
 });
 
 function setTime(event: any) {
-  emits("onSeek", event.target.value);
+  emits("onSeek", (props.duration * (event.target.value / 100)));
 }
 
 function getFileDuration(duration) {
@@ -65,6 +65,7 @@ function getFileDuration(duration) {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  border-radius: 999px;
 
   &__time {
     color: $font-color-light;
@@ -73,6 +74,7 @@ function getFileDuration(duration) {
   &__control {
     width: 100%;
     -webkit-appearance: none;
+    background: transparent;
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;

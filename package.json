@@ -20,6 +20,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^1.0.2",
     "@electron-toolkit/utils": "^1.0.2",
+    "@types/howler": "^2.2.7",
     "howler": "^2.2.3",
     "lowdb": "^3.0.0",
     "node-id3": "^0.2.3",

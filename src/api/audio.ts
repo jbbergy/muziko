@@ -4,6 +4,7 @@ export class AudioController {
   _howlInstance: Howl|null
   _isPaused = true
   _isPlaying = false
+  _instanceId: number | null = null
 
   constructor(file:string) {
     this._howlInstance = new Howl({
@@ -34,7 +35,7 @@ export class AudioController {
 
   play() {
     if (!this._howlInstance) return
-    this._howlInstance.play()
+    this._instanceId = this._howlInstance.play()
     this._isPaused = false
     this._isPlaying = true
   }
@@ -53,6 +54,13 @@ export class AudioController {
       this._howlInstance.stop()
       this._isPaused = false
       this._isPlaying = false
+    }
+  }
+
+  seek(seekTo) {
+    if (this._instanceId) {
+      console.log('seek', seekTo)
+      this._howlInstance?.seek(seekTo, this._instanceId)
     }
   }
 } 

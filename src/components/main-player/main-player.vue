@@ -46,7 +46,7 @@ const seek = ref(0);
 const duration = ref(0);
 const currentVolume = ref(0.3);
 const isPlaying = ref(false);
-let audioController: AudioController | null = null;
+// let audioController: AudioController | null = null;
 let intervalId: NodeJS.Timeout | null = null;
 
 const progressBarValue = computed(() => {
@@ -59,7 +59,7 @@ const progressBarValue = computed(() => {
 const fileToPlay = computed(() => audioStore.currentFile);
 
 onBeforeUnmount(() => {
-  if (audioController) audioController.destroy();
+  if (audioStore.currentInstance) audioStore.currentInstance.destroy();
 });
 
 watch(fileToPlay, () => {
@@ -67,11 +67,12 @@ watch(fileToPlay, () => {
   play();
 });
 watch(currentVolume, (value) => {
-  audioController?.setVolume(value);
+  audioStore.currentInstance?.setVolume(value);
 });
 
 function onSeek(value) {
-  console.log('onSeek', value)
+  audioStore.currentInstance?.seek(value);
+  seek.value = value
 }
 
 function setVolume(volumeElem) {
@@ -79,13 +80,13 @@ function setVolume(volumeElem) {
 }
 
 function stop() {
-  if (!audioController) return;
-  audioController.stop();
+  if (!audioStore.currentInstance) return;
+  audioStore.currentInstance.stop();
 }
 
 function pause() {
-  if (!audioController) return;
-  audioController.pause();
+  if (!audioStore.currentInstance) return;
+  audioStore.currentInstance.pause();
 }
 
 function play() {
@@ -93,23 +94,23 @@ function play() {
     clearInterval(intervalId);
     intervalId = null;
   }
-  if (!audioController?.getIsPaused()) {
-    audioController = new AudioController(fileToPlay.value?.path);
+  if (!audioStore.currentInstance?.getIsPaused()) {
+    audioStore.currentInstance = new AudioController(fileToPlay.value?.path);
   }
-  audioController.getInstance().on("load", function () {
-    if (!audioController) return;
-    duration.value = audioController.getInstance().duration();
+  audioStore.currentInstance.getInstance().on("load", function () {
+    if (!audioStore.currentInstance) return;
+    duration.value = audioStore.currentInstance.getInstance().duration();
   });
-  audioController.getInstance().on("end", function () {
+  audioStore.currentInstance.getInstance().on("end", function () {
     console.log("TODO: Load next file");
   });
   intervalId = setInterval(() => {
-    if (!audioController) return;
-    isPlaying.value = audioController.getIsPlaying()
-    seek.value = audioController.getInstance()?.seek() || 0;
+    if (!audioStore.currentInstance) return;
+    isPlaying.value = audioStore.currentInstance.getIsPlaying()
+    seek.value = audioStore.currentInstance.getInstance()?.seek() || 0;
   }, 100);
-  audioController.setVolume(currentVolume.value);
-  audioController.play();
+  audioStore.currentInstance.setVolume(currentVolume.value);
+  audioStore.currentInstance.play();
 }
 
 function onClickShuffle() {

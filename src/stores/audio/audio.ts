@@ -6,6 +6,13 @@ export const useAudioStore = defineStore('audio', () => {
   const currentPlaylist = ref()
   const selectedFile = ref()
   const currentFile = ref()
+  const currentInstance = ref()
 
-  return { selectedFolder, currentPlaylist, selectedFile, currentFile }
+  return {
+    selectedFolder,
+    currentPlaylist,
+    selectedFile,
+    currentFile,
+    currentInstance
+  }
 })

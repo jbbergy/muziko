@@ -1,11 +1,11 @@
 <template>
   <div class="m-range">
     <input
-      value="30"
+      value="0.3"
       type="range"
-      step="0.1"
+      step="0.01"
       min="0"
-      max="100"
+      max="1"
       class="m-range__control"
       @input="onInput"
     />
@@ -38,6 +38,7 @@ function onInput(event) {
   &__control {
     width: 100%;
     -webkit-appearance: none;
+    background: transparent;
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
@@ -51,7 +52,7 @@ function onInput(event) {
     &::-webkit-slider-runnable-track {
       -webkit-appearance: none;
       height: 0.25rem;
-        background-color: $background-progress-bar-hover;
+      background-color: $background-progress-bar;
       border-radius: 999px;
     }
 
