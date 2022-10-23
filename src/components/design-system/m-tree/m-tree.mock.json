@@ -1,0 +1,97 @@
+{
+  "library": [
+    {
+      "uuid": "005673c3-f70e-4644-8774-3fd46612b22e",
+      "path": "H:\\MUSIQUE\\Brock Berrigan - The Scenic Route",
+      "label": "Brock Berrigan - The Scenic Route",
+      "name": "Brock Berrigan - The Scenic Route",
+      "isDir": true,
+      "isSymLink": false,
+      "children": []
+    },
+    {
+      "uuid": "17525022-1f23-43e7-8e9b-eba11c941cee",
+      "path": "H:\\MUSIQUE\\BO",
+      "label": "BO",
+      "name": "BO",
+      "isDir": true,
+      "isSymLink": false,
+      "children": [
+        {
+          "uuid": "7245df5e-5f9f-4dd3-8a57-6f1a11803405",
+          "path": "H:\\MUSIQUE\\BO\\Games of Throne",
+          "label": "Games of Throne",
+          "name": "Games of Throne",
+          "isDir": true,
+          "isSymLink": false,
+          "children": []
+        },
+        {
+          "uuid": "eb0a8034-80f3-49fe-b305-06bef9c35778",
+          "path": "H:\\MUSIQUE\\BO\\Gladiator",
+          "label": "Gladiator",
+          "name": "Gladiator",
+          "isDir": true,
+          "isSymLink": false,
+          "children": []
+        },
+        {
+          "uuid": "65196fd4-5c97-484c-add9-df378e9ba0e6",
+          "path": "H:\\MUSIQUE\\BO\\VA - Django Unchained OST (2012) [FLAC]",
+          "label": "VA - Django Unchained OST (2012) [FLAC]",
+          "name": "VA - Django Unchained OST (2012) [FLAC]",
+          "isDir": true,
+          "isSymLink": false,
+          "children": []
+        }
+      ]
+    },
+    {
+      "uuid": "09bd9ad7-5c89-4c6e-ba0d-28e5c2a1db91",
+      "path": "H:\\MUSIQUE\\tympanik. - a dream",
+      "label": "tympanik. - a dream",
+      "name": "tympanik. - a dream",
+      "isDir": true,
+      "isSymLink": false,
+      "children": []
+    },
+    {
+      "uuid": "8963c9f9-20be-4da5-9f50-3b1d12ff3910",
+      "path": "H:\\MUSIQUE\\neotokyo",
+      "label": "neotokyo",
+      "name": "neotokyo",
+      "isDir": true,
+      "isSymLink": false,
+      "children": [
+        {
+          "uuid": "e35c5c86-9976-4bc5-8a10-da18c8466384",
+          "path": "H:\\MUSIQUE\\neotokyo\\WAV",
+          "label": "WAV",
+          "name": "WAV",
+          "isDir": true,
+          "isSymLink": false,
+          "children": [
+            {
+              "uuid": "4b50d47d-7fa8-4d03-9c99-d91c071c9b93",
+              "path": "H:\\MUSIQUE\\neotokyo\\WAV\\test",
+              "label": "test",
+              "name": "test",
+              "isDir": true,
+              "isSymLink": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "uuid": "bc589498-924a-4681-800d-59331c574622",
+      "path": "H:\\MUSIQUE\\nymano x Pandrezz - Hometown",
+      "label": "nymano x Pandrezz - Hometown",
+      "name": "nymano x Pandrezz - Hometown",
+      "isDir": true,
+      "isSymLink": false,
+      "children": []
+    }
+  ]
+}

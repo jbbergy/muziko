@@ -30,6 +30,7 @@ body {
   width: 100vw;
   height: 100vh;
   background: $dark;
+  overflow: hidden;
 
   .main-container {
     width: 100%;
@@ -48,6 +49,7 @@ body {
       grid-area: main-view;
       background: $background-base;
       border-radius: 0.5rem;
+      overflow: auto;
     }
   }
 }

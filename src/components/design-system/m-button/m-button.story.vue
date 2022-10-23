@@ -27,7 +27,3 @@ import MButtonSecondary from './m-button.secondary.vue'
 import MButtonControlPrimary from './m-button.control.primary.vue'
 import MButtonControlSecondary from './m-button.control.secondary.vue'
 </script>
-
-<style lang="scss">
-
-</style>

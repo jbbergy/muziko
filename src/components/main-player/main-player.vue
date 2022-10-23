@@ -8,8 +8,8 @@
         <button-prev-svg />
       </m-button-ctrl-secondary>
       <m-button-ctrl-primary :is-active="isPlay">
-        <button-pause-svg v-if="isPlaying" />
-        <button-play-svg v-else />
+        <button-pause-svg v-if="isPlaying" @click="pause" />
+        <button-play-svg v-else @click="play" />
       </m-button-ctrl-primary>
       <m-button-ctrl-secondary :is-active="isNext" @click="onClickNext">
         <button-next-svg />

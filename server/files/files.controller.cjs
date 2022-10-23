@@ -1,9 +1,9 @@
 const { v4 } = require('uuid')
 const path = require('path')
 const fse = require('fs-extra')
+const NodeID3 = require('node-id3')
 const mime = require('mime-types')
 const { app, dialog, BrowserWindow } = require('electron')
-
 
 /*
 * Open a dialog window to select a directory
@@ -93,6 +93,17 @@ const listFilesFromDirectory = async (directory) => {
 
       const mimeType = mime.lookup(pathToFile)
 
+      if (!isDirectory) {
+        try {
+          const options = {             // only return raw object (default: false)
+            noRaw: true                  // don't generate raw object (default: false)
+          }
+          fileData = NodeID3.read(pathToFile, options)
+        } catch (error) {
+          console.error('listFilesFromDirectory/metadata error', error)
+        }
+      }
+
       if (!isDirectory && mimeType.toString().includes('audio')) {
         const retVal = {
           uuid: v4(),
@@ -101,7 +112,8 @@ const listFilesFromDirectory = async (directory) => {
           name: file,
           isDir: isDirectory,
           isSymLink: false,
-          mime: mimeType
+          mime: mimeType,
+          metadata: fileData
         }
         filesList?.push(retVal)
       }

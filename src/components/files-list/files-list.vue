@@ -1,22 +1,37 @@
 <template>
   <div class="files-list">
-    <ul>
+    <h1 class="files-list__title">
+      {{ audioStore.selectedFolder.label }}
+    </h1>
+    <ul
+      class="files-list__list"
+    >
       <li
-        class="files-list__item"
+        class="files-list__list-item"
         v-for="audioItem in audioStore.currentPlaylist"
         :key="audioItem.uuid"
-        @dblclick="onSelectFile(audioItem)"
       >
-        <span class="files-list__itemtext">{{ audioItem.name }}</span>
+        <files-list-item
+          :item="audioItem"
+          :is-playing="currentFileId === audioItem.uuid"
+          @dblclick="onSelectFile(audioItem)"
+          @click="onSelectFile(audioItem)"
+        />
       </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useAudioStore } from "../../stores/audio/audio";
+import { computed } from 'vue'
+import FilesListItem from '../files-list-item/files-list-item.vue'
+import { useAudioStore } from "../../stores/audio/audio"
 
 const audioStore = useAudioStore();
+
+const currentFileId = computed(() => {
+  return audioStore?.currentFile?.uuid
+})
 
 function onSelectFile(file) {
   audioStore.currentFile = file
@@ -27,12 +42,15 @@ function onSelectFile(file) {
 <style lang="scss">
 .files-list {
 
-  &__item {
-      cursor: pointer;
-    
-      &text:hover {
-        color: darken($font-color-light, 20%);
-      }
+  &__title {
+    text-transform: uppercase;
+    margin-left: 1rem;
+  }
+
+  &__list {
+    list-style: none;
+    padding-inline-start: $playlists-default-margin;
+    padding-inline-end: $playlists-default-margin;
   }
 }
 </style>
