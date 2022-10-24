@@ -15,17 +15,11 @@
 
 <script lang="ts" setup>
 import ButtonPlaySmallSvg from "../../assets/svg/icons/play-small.svg";
-import { computed } from "vue";
+import { computed, watch, ref } from "vue";
+import { useAudioStore } from "../../stores/audio/audio"
 
-const tagTrackname = computed(() => {
-  return props.item.metadata?.title || props.item.label;
-});
-
-const tagArtist = computed(() => {
-  const artist = props.item.metadata?.artist || null;
-  return artist ? `${artist}\xa0-\xa0` : "";
-});
-
+const audioStore = useAudioStore();
+const isPlaying = ref(false)
 const emits = defineEmits(['dblclick', 'click'])
 
 const props = defineProps({
@@ -35,8 +29,17 @@ const props = defineProps({
   },
   isPlaying: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
+});
+
+const tagTrackname = computed(() => {
+  return props.item.metadata?.title || props.item.label;
+});
+
+const tagArtist = computed(() => {
+  const artist = props.item.metadata?.artist || null;
+  return artist ? `${artist}\xa0-\xa0` : "";
 });
 
 function onDblclick() {

@@ -9,18 +9,25 @@
         v-for="libraryItem in library"
         :key="libraryItem.uuid"
       >
-        <div :class="[
-          'status-indicator',
-          openedItems[libraryItem.uuid] && 'status-indicator--open'
-          ]"
-          @click="selectFolder(libraryItem)"
-        />
-        <span
-          class="m-tree__list-itemtext"
-          @click="selectFolder(libraryItem)"
+        <div class="m-tree__list-item-wrapper"
         >
-          {{ libraryItem.label }}
-        </span>
+          <div :class="[
+            'status-indicator',
+            openedItems[libraryItem.uuid] && 'status-indicator--open'
+            ]"
+            @click="selectFolder(libraryItem)"
+          />
+          <span
+            class="m-tree__list-itemtext"
+            @click="selectFolder(libraryItem)"
+          >
+            {{ libraryItem.label }}
+          </span>
+          <div class="m-tree__list-item-controls">
+            <button-play-small-svg @click="selectFolder(libraryItem, true)" />
+          </div>
+        </div>
+        
         <template v-if="libraryItem.children.length > 0 && openedItems[libraryItem.uuid]">
           <m-tree :library="libraryItem.children" :parent-folder-id="libraryItem.uuid" />
         </template>
@@ -33,7 +40,10 @@
 import { ref } from 'vue'
 import { useAudioStore } from "../../../stores/audio/audio";
 import { listFilesFromDirectory } from "../../../api/files"
+import ButtonPlaySmallSvg from "../../../assets/svg/icons/play-small.svg";
 
+const clickCount = ref(0)
+const fetching = ref()
 const audioStore = useAudioStore();
 const openedItems = ref({})
 
@@ -48,8 +58,11 @@ const props = defineProps({
   },
 });
 
-
-async function selectFolder(folder) {
+async function selectFolder(folder, autoPlay = false) {
+  if (audioStore.selectedFolder?.path === folder.path) return
+  if (fetching.value === folder.path) return
+  fetching.value = folder.path
+  audioStore.autoPlay = autoPlay
 
   if (!props.parentFolderId) {
     openedItems.value = {}
@@ -64,6 +77,7 @@ async function selectFolder(folder) {
 
   try {
     audioStore.currentPlaylist = await listFilesFromDirectory(folder.path)
+    fetching.value = null
   } catch (error) {
     console.error('m-tree/selectFolder error', error)
   }
@@ -104,6 +118,42 @@ async function selectFolder(folder) {
 
       &--open {
         color: $playlists-color-selected;
+      }
+
+      &-controls {
+        position: absolute;
+        right: 1rem;
+        top: 0;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0.25rem;
+        border-radius: 999px;
+        background-color: $playlists-bg-color-play;
+        display: none;
+
+        svg {
+          height: 100%;
+          fill: $playlists-button-color-play;
+        }
+      }
+
+      &-wrapper {
+        position: relative;
+        width: 100%;
+        height: 1.5rem;
+
+        &:hover {
+          .m-tree__list-item-controls {
+            display: block;
+
+            &:hover {
+              svg {
+                height: 100%;
+                fill: $playlists-button-color-playing;
+              }
+            }
+          }
+        }
       }
     }
   }

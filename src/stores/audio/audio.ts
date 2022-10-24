@@ -9,6 +9,9 @@ export const useAudioStore = defineStore('audio', () => {
   const currentInstance = ref()
   const currentVolume = ref(0.3)
   const backupVolume = ref()
+  const autoPlay = ref(false)
+  const isShuffle = ref(false)
+  const isLoop = ref(false)
 
   return {
     selectedFolder,
@@ -17,6 +20,9 @@ export const useAudioStore = defineStore('audio', () => {
     currentFile,
     currentInstance,
     currentVolume,
-    backupVolume
+    backupVolume,
+    autoPlay,
+    isShuffle,
+    isLoop
   }
 })

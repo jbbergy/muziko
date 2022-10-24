@@ -4,7 +4,7 @@ export class AudioController {
   _howlInstance: Howl|null
   _isPaused = true
   _isPlaying = false
-  _instanceId: number | null = null
+  _instanceId: number | undefined = undefined
 
   constructor(file: string) {
     const options = {
@@ -53,7 +53,7 @@ export class AudioController {
   stop() {
     if (!this._howlInstance) return
     if (this._howlInstance.playing() || this._isPaused === true) {
-      this._howlInstance.stop()
+      this._howlInstance.stop(this._instanceId)
       this._isPaused = false
       this._isPlaying = false
     }

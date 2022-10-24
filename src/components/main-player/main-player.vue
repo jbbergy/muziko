@@ -1,7 +1,7 @@
 <template>
   <div class="main-player">
     <div class="transport-controls">
-      <m-button-ctrl-secondary :is-active="isShuffle" @click="onClickShuffle">
+      <m-button-ctrl-secondary :is-active="audioStore.isShuffle" @click="onClickShuffle">
         <button-shuffle-svg />
       </m-button-ctrl-secondary>
       <m-button-ctrl-secondary :is-active="isPrev" @click="onClickPrev">
@@ -14,7 +14,7 @@
       <m-button-ctrl-secondary :is-active="isNext" @click="onClickNext">
         <button-next-svg />
       </m-button-ctrl-secondary>
-      <m-button-ctrl-secondary :is-active="isRepeat" @click="onClickRepeat">
+      <m-button-ctrl-secondary :is-active="audioStore.isLoop" @click="onClickRepeat">
         <button-repeat-svg />
       </m-button-ctrl-secondary>
     </div>
@@ -37,11 +37,9 @@ import { AudioController } from "../../api/audio";
 import { useAudioStore } from "../../stores/audio/audio";
 
 const audioStore = useAudioStore();
-const isShuffle = ref(false);
 const isPrev = ref(false);
 const isNext = ref(false);
 const isPlay = ref(false);
-const isRepeat = ref(false);
 const seek = ref(0);
 const duration = ref(0);
 const isPlaying = ref(false);
@@ -50,20 +48,37 @@ let intervalId: NodeJS.Timeout | null = null;
 
 onMounted(() => {
   document.addEventListener('keyup', (event) => {
-    switch (event.key) {
-      case 'MediaTrackNext': 
-        onClickNext()
-        break;
-      case 'MediaTrackPrevious': 
-        onClickPrev()
-        break;
-      case ' ': 
-        if (isPlaying.value) {
-          pause()
-        } else {
-          play()
-        }
-        break;
+    if (event.ctrlKey) {
+      switch (event.key) {
+        case 'p': 
+          onClickPrev()
+          break;
+        case 'n': 
+          onClickNext()
+          break;
+        case 'l': 
+          onClickRepeat()
+          break;
+        case 's': 
+          onClickShuffle()
+          break;
+        case ' ': 
+          if (isPlaying.value) {
+            pause()
+          } else {
+            play()
+          }
+          break;
+      }
+    } else {
+      switch (event.key) {
+        case 'MediaTrackNext': 
+          onClickNext()
+          break;
+        case 'MediaTrackPrevious': 
+          onClickPrev()
+          break;
+      }
     }
   })
 })
@@ -114,7 +129,9 @@ function play() {
     duration.value = audioStore.currentInstance.getInstance().duration();
   });
   audioStore.currentInstance.getInstance().on("end", function () {
-    onClickNext()
+    if (!audioStore.isLoop) {
+      onClickNext()
+    }
   });
   intervalId = setInterval(() => {
     if (!audioStore.currentInstance) return;
@@ -126,13 +143,13 @@ function play() {
 }
 
 function onClickShuffle() {
-  isShuffle.value = !isShuffle.value;
+  audioStore.isShuffle = !audioStore.isShuffle;
 }
 
 function onClickRepeat() {
   if (audioStore.currentInstance) {
-    isRepeat.value = !isRepeat.value;
-    audioStore.currentInstance.loop(isRepeat.value)
+    audioStore.isLoop = !audioStore.isLoop;
+    audioStore.currentInstance.loop(audioStore.isLoop)
   }
 }
 
@@ -142,7 +159,7 @@ function onClickPrev() {
   
   let newIndex = currentindex - 1
 
-  if (isShuffle.value) {
+  if (audioStore.isShuffle) {
     newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length)
   }
 
@@ -160,7 +177,7 @@ function onClickNext() {
   
   let newIndex = currentindex + 1
 
-  if (isShuffle.value) {
+  if (audioStore.isShuffle) {
     newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length)
   }
 
