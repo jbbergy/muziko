@@ -1,5 +1,5 @@
 <template>
-  <nav class="sidebar">
+  <nav class="sidebar custom-scrollbar">
     <m-button-secondary @click="addFolder">Ajouter un dossier</m-button-secondary>
     <playlists />
   </nav>

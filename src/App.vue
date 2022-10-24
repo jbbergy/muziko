@@ -2,7 +2,7 @@
   <div class="main-container">
     <main-header></main-header>
     <sidebar></sidebar>
-    <div class="main-container__main-view">
+    <div class="main-container__main-view custom-scrollbar">
       <router-view></router-view>
     </div>
     <main-footer></main-footer>
@@ -46,6 +46,7 @@ body {
       "player player";
 
     &__main-view {
+      $mainViewRef: &;
       grid-area: main-view;
       background: $background-base;
       border-radius: 0.5rem;
