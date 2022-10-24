@@ -38,5 +38,7 @@ async function addFolder() {
   width: 21rem;
   background: $background-base;
   border-radius: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 </style>

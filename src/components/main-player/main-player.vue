@@ -49,16 +49,17 @@ const isPlaying = ref(false);
 let intervalId: NodeJS.Timeout | null = null;
 
 onMounted(() => {
-  document.addEventListener('keyup', ({ key }) => {
-    switch (key) {
+  document.addEventListener('keyup', (event) => {
+    console.log(event.key)
+    switch (event.key) {
       case 'MediaTrackNext': 
         onClickNext()
         break;
       case 'MediaTrackPrevious': 
         onClickPrev()
         break;
-      case 'MediaPlayPause': 
-        if (isPlaying) {
+      case ' ': 
+        if (isPlaying.value) {
           pause()
         } else {
           play()
