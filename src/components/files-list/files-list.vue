@@ -10,6 +10,7 @@
         class="files-list__list-item"
         v-for="audioItem in audioStore.currentPlaylist"
         :key="audioItem.uuid"
+        :id="audioItem.uuid"
       >
         <files-list-item
           :item="audioItem"
@@ -23,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import FilesListItem from '../files-list-item/files-list-item.vue'
 import { useAudioStore } from "../../stores/audio/audio"
 
@@ -31,6 +32,15 @@ const audioStore = useAudioStore();
 
 const currentFileId = computed(() => {
   return audioStore?.currentFile?.uuid
+})
+
+watch(currentFileId, (value) => {
+  const trackEl = document.getElementById(value)
+  if (trackEl) {
+    trackEl.scrollIntoView({
+      behavior: 'smooth'
+    })
+  }
 })
 
 function onSelectFile(file) {
