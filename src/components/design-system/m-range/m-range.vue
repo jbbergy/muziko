@@ -1,7 +1,7 @@
 <template>
   <div class="m-range">
     <input
-      value="0.3"
+      :value="props.value"
       type="range"
       step="0.01"
       min="0"
@@ -13,6 +13,13 @@
 </template>
 
 <script lang="ts" setup>
+
+const props = defineProps({
+  value: {
+    type: Number,
+    default: 0.3
+  }
+})
 
 const emits = defineEmits(['input'])
 

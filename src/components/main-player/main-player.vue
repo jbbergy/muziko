@@ -50,7 +50,6 @@ let intervalId: NodeJS.Timeout | null = null;
 
 onMounted(() => {
   document.addEventListener('keyup', (event) => {
-    console.log(event.key)
     switch (event.key) {
       case 'MediaTrackNext': 
         onClickNext()

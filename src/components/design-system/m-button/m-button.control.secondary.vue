@@ -40,13 +40,11 @@ function onClick() {
 
       :deep(svg) {
         fill: $button-background-secondary;
-        stroke: $button-background-secondary;
       }
 
       &:hover {
         :deep(svg) {
           fill: $font-color-light;
-          stroke: $font-color-light;
         }
       }
     }
@@ -65,7 +63,6 @@ function onClick() {
 
       :deep(svg) {
         fill: $font-color-accent;
-        stroke: $font-color-accent;
       }
     }
   }
