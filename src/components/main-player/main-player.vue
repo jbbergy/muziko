@@ -18,7 +18,12 @@
         <button-repeat-svg />
       </m-button-ctrl-secondary>
     </div>
-    <m-progress-bar :value="progressBarValue" :currentTime="seek" :duration="duration" @onSeek="onSeek" />
+    <m-progress-bar
+      :value="progressBarValue"
+      :currentTime="seek"
+      :duration="duration"
+      @onSeek="onSeek"
+    />
   </div>
 </template>
 
@@ -43,45 +48,44 @@ const isPlay = ref(false);
 const seek = ref(0);
 const duration = ref(0);
 const isPlaying = ref(false);
-// let audioController: AudioController | null = null;
 let intervalId: NodeJS.Timeout | null = null;
 
 onMounted(() => {
-  document.addEventListener('keyup', (event) => {
-    if (event.ctrlKey) {
-      switch (event.key) {
-        case 'p': 
-          onClickPrev()
+  document.addEventListener("keyup", (event) => {
+    if (!!event.ctrlKey) {
+      switch (event.code) {
+        case "KeyP":
+          onClickPrev();
           break;
-        case 'n': 
-          onClickNext()
+        case "KeyN":
+          onClickNext();
           break;
-        case 'l': 
-          onClickRepeat()
+        case "KeyPL":
+          onClickRepeat();
           break;
-        case 's': 
-          onClickShuffle()
+        case "KeyS":
+          onClickShuffle();
           break;
-        case ' ': 
-          if (isPlaying.value) {
-            pause()
+        case "Space":
+          if (audioStore.currentInstance.getIsPaused()) {
+            play();
           } else {
-            play()
+            pause();
           }
           break;
       }
     } else {
       switch (event.key) {
-        case 'MediaTrackNext': 
-          onClickNext()
+        case "MediaTrackNext":
+          onClickNext();
           break;
-        case 'MediaTrackPrevious': 
-          onClickPrev()
+        case "MediaTrackPrevious":
+          onClickPrev();
           break;
       }
     }
-  })
-})
+  });
+});
 
 onBeforeUnmount(() => {
   if (audioStore.currentInstance) audioStore.currentInstance.destroy();
@@ -103,7 +107,7 @@ watch(fileToPlay, () => {
 
 function onSeek(value) {
   audioStore.currentInstance?.seek(value);
-  seek.value = value
+  seek.value = value;
 }
 
 function stop() {
@@ -122,23 +126,27 @@ function play() {
     intervalId = null;
   }
   if (!audioStore.currentInstance?.getIsPaused()) {
+    if (audioStore.currentInstance) {
+      audioStore.currentInstance.destroy();
+      audioStore.currentInstance = null;
+    }
     audioStore.currentInstance = new AudioController(fileToPlay.value?.path);
   }
-  audioStore.currentInstance.getInstance().on("load", function () {
-    if (!audioStore.currentInstance) return;
-    duration.value = audioStore.currentInstance.getInstance().duration();
-  });
   audioStore.currentInstance.getInstance().on("end", function () {
     if (!audioStore.isLoop) {
-      onClickNext()
+      onClickNext();
     }
   });
   intervalId = setInterval(() => {
     if (!audioStore.currentInstance) return;
-    isPlaying.value = audioStore.currentInstance.getIsPlaying()
+    isPlaying.value = audioStore.currentInstance.getIsPlaying();
     seek.value = audioStore.currentInstance.getInstance()?.seek() || 0;
   }, 100);
   audioStore.currentInstance.setVolume(audioStore.currentVolume);
+  audioStore.currentInstance.getInstance().once("load", function () {
+    if (!audioStore.currentInstance) return;
+    duration.value = audioStore.currentInstance.getInstance().duration();
+  });
   audioStore.currentInstance.play();
 }
 
@@ -149,22 +157,24 @@ function onClickShuffle() {
 function onClickRepeat() {
   if (audioStore.currentInstance) {
     audioStore.isLoop = !audioStore.isLoop;
-    audioStore.currentInstance.loop(audioStore.isLoop)
+    audioStore.currentInstance.loop(audioStore.isLoop);
   }
 }
 
 function onClickPrev() {
   isPrev.value = true;
-  const currentindex = audioStore.currentPlaylist.findIndex((item) => item.uuid === audioStore.currentFile.uuid)
-  
-  let newIndex = currentindex - 1
+  const currentindex = audioStore.currentPlaylist.findIndex(
+    (item) => item.uuid === audioStore.currentFile.uuid
+  );
+
+  let newIndex = currentindex - 1;
 
   if (audioStore.isShuffle) {
-    newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length)
+    newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length);
   }
 
   if (newIndex > -1) {
-    audioStore.currentFile = audioStore.currentPlaylist[newIndex]
+    audioStore.currentFile = audioStore.currentPlaylist[newIndex];
   }
   setTimeout(() => {
     isPrev.value = false;
@@ -173,20 +183,22 @@ function onClickPrev() {
 
 function onClickNext() {
   isNext.value = true;
-  const currentindex = audioStore.currentPlaylist.findIndex((item) => item.uuid === audioStore.currentFile.uuid)
-  
-  let newIndex = currentindex + 1
+  const currentindex = audioStore.currentPlaylist.findIndex(
+    (item) => item.uuid === audioStore.currentFile.uuid
+  );
+
+  let newIndex = currentindex + 1;
 
   if (audioStore.isShuffle) {
-    newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length)
+    newIndex = Math.round(Math.random() * audioStore.currentPlaylist.length);
   }
 
   if (newIndex >= audioStore.currentPlaylist.length) {
-    newIndex = 0
+    newIndex = 0;
   }
 
   if (newIndex < audioStore.currentPlaylist.length) {
-    audioStore.currentFile = audioStore.currentPlaylist[newIndex]
+    audioStore.currentFile = audioStore.currentPlaylist[newIndex];
   }
   setTimeout(() => {
     isNext.value = false;

@@ -16,11 +16,23 @@ export class AudioController {
   }
 
   destroy() {
+    this._howlInstance?.unload()
+    Howler?.unload()
     this._howlInstance = null
+  }
+
+  // unloaded, loading or loaded
+  getState() {
+    if (!this._howlInstance) return
+    return this._howlInstance.state()
   }
 
   getInstance() {
     return this._howlInstance
+  }
+
+  getInstanceId() {
+    return this._instanceId
   }
 
   getIsPaused() {
@@ -44,7 +56,7 @@ export class AudioController {
 
   pause() {
     if (!this._howlInstance) return
-    this._howlInstance.pause()
+    this._howlInstance.pause(this._instanceId)
     this._isPaused = true
     this._isPlaying = false
   }
