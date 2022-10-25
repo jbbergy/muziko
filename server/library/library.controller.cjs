@@ -5,7 +5,7 @@ const { app } = require('electron')
 const { readDirectory } = require('../files/files.controller.cjs')
 
 
-const libraryPath = path.join(app.getPath('userData'), '/library.db.json')
+const libraryPath = path.join(app.getPath('userData'), '/muziko.library.db.json')
 var adapter = null
 var db = null
 
