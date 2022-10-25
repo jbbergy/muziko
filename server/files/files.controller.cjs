@@ -1,7 +1,7 @@
 const { v4 } = require('uuid')
 const path = require('path')
 const fse = require('fs-extra')
-const NodeID3 = require('node-id3')
+const jsmediatags = require("jsmediatags");
 const mime = require('mime-types')
 const { app, dialog, BrowserWindow } = require('electron')
 
@@ -93,12 +93,20 @@ const listFilesFromDirectory = async (directory) => {
 
       const mimeType = mime.lookup(pathToFile)
 
+      let fileData = null
       if (!isDirectory) {
         try {
-          const options = {             // only return raw object (default: false)
-            noRaw: true                  // don't generate raw object (default: false)
-          }
-          fileData = NodeID3.read(pathToFile, options)
+          const readTags = new Promise((resolve, reject) => {
+            jsmediatags.read(pathToFile, {
+              onSuccess: function (tags) {
+                resolve(tags)
+              },
+              onError: function (error) {
+                reject(error)
+              }
+            });
+          })
+          fileData = await readTags
         } catch (error) {
           console.error('listFilesFromDirectory/metadata error', error)
         }
@@ -113,7 +121,7 @@ const listFilesFromDirectory = async (directory) => {
           isDir: isDirectory,
           isSymLink: false,
           mime: mimeType,
-          metadata: fileData
+          metadata: fileData.tags
         }
         filesList?.push(retVal)
       }
