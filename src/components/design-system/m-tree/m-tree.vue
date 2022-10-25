@@ -61,6 +61,7 @@ const props = defineProps({
 async function selectFolder(folder, autoPlay = false) {
   if (audioStore.selectedFolder?.path === folder.path) return
   if (fetching.value === folder.path) return
+  audioStore.isLoadingFiles = true
   fetching.value = folder.path
   audioStore.autoPlay = autoPlay
 
@@ -80,6 +81,10 @@ async function selectFolder(folder, autoPlay = false) {
     fetching.value = null
   } catch (error) {
     console.error('m-tree/selectFolder error', error)
+  } finally {
+    setTimeout(() => {
+      audioStore.isLoadingFiles = false
+    }, 300);
   }
 }
 
@@ -140,7 +145,7 @@ async function selectFolder(folder, autoPlay = false) {
       &-wrapper {
         position: relative;
         width: 100%;
-        height: 1.5rem;
+        min-height: 1.5rem;
 
         &:hover {
           .m-tree__list-item-controls {
