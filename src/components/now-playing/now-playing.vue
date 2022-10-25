@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { Buffer } from 'buffer'
-import PicturePlaceholder from '../../assets/img/cover.jfif'
+import PicturePlaceholder from '../../assets/img/cover.jpg'
 import { computed } from 'vue'
 import { useAudioStore } from '../../stores/audio/audio'
 
