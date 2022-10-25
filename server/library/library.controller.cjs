@@ -64,6 +64,7 @@ const fetchAll = () => {
 */
 const create = async (libraryItem) => {
   if (!isDbLibraryInitialized()) return null
+  if (!libraryItem) return
 
   let newTree = null
   try {

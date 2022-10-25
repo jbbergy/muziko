@@ -1,7 +1,7 @@
 <template>
   <div class="now-playing">
     <div class="now-playing__cover">
-      <img src="../../assets/img/cover.jfif" alt="Cover" />
+      <img :src="trackPicture" alt="Cover" />
     </div>
     <div class="now-playing__title">
       <div class="now-playing__main-title">{{ trackTitle }}</div>
@@ -11,6 +11,8 @@
 </template>
 
 <script lang="ts" setup>
+import { Buffer } from 'buffer'
+import PicturePlaceholder from '../../assets/img/cover.jfif'
 import { computed } from 'vue'
 import { useAudioStore } from '../../stores/audio/audio'
 
@@ -22,7 +24,15 @@ const trackTitle = computed(() => {
 const trackArtist = computed(() => {
   return audioStore.currentFile?.metadata?.artist
 })
-
+const trackPicture = computed(() => {
+  if (audioStore.currentFile?.metadata?.picture?.data) {
+    let image = Buffer.from(audioStore.currentFile.metadata.picture.data).toString('base64')
+    return `data:${audioStore.currentFile.metadata.picture.format};base64,${image}`
+  } else {
+    return PicturePlaceholder
+  }
+    
+})
 </script>
 
 <style lang="scss">
@@ -46,6 +56,14 @@ const trackArtist = computed(() => {
     &__subtitle {
       font-size: $now-playing-subtitle;
       color: $font-color-grey;
+    }
+
+    &__cover {
+
+      img {
+        width: 4rem;
+        height: 4rem;
+      }
     }
   }
 </style>

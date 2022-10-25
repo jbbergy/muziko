@@ -121,7 +121,7 @@ const listFilesFromDirectory = async (directory) => {
           isDir: isDirectory,
           isSymLink: false,
           mime: mimeType,
-          metadata: fileData.tags
+          metadata: fileData?.tags
         }
         filesList?.push(retVal)
       }

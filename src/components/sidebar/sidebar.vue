@@ -1,6 +1,8 @@
 <template>
   <nav class="sidebar custom-scrollbar">
-    <m-button-secondary @click="addFolder">Ajouter un dossier</m-button-secondary>
+    <div class="sidebar__actions">
+      <m-button-tertiary @click="addFolder">Ajouter un dossier</m-button-tertiary>
+    </div>
     <playlists />
   </nav>
 </template>
@@ -8,7 +10,7 @@
 <script lang="ts" setup>
 import { selectDirectory } from '../../api/files'
 import { create as LibraryCreate, getLibrary } from '../../api/library'
-import MButtonSecondary from '../design-system/m-button/m-button.secondary.vue'
+import MButtonTertiary from '../design-system/m-button/m-button.tertiary.vue'
 import Playlists from '../playlists/playlists.vue'
 import { useLibraryStore } from '../../stores/library/library'
 
@@ -40,5 +42,10 @@ async function addFolder() {
   border-radius: 0.5rem;
   overflow-x: hidden;
   overflow-y: auto;
+
+  &__actions {
+    width: 100%;
+    padding: 0.5rem;
+  }
 }
 </style>
