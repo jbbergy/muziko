@@ -1,5 +1,5 @@
 <template>
-  <div class="main-header">Muziko</div>
+  <div class="main-header" />
 </template>
 
 <style lang="scss" scoped>
