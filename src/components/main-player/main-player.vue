@@ -131,23 +131,25 @@ function play() {
       audioStore.currentInstance = null;
     }
     audioStore.currentInstance = new AudioController(fileToPlay.value?.path);
+    audioStore.currentInstance.getInstance().on("end", function () {
+      if (!audioStore.isLoop) {
+        onClickNext();
+      }
+    });
+    audioStore.currentInstance.setVolume(audioStore.currentVolume);
+    audioStore.currentInstance.getInstance().once("load", function () {
+      if (!audioStore.currentInstance) return;
+      duration.value = audioStore.currentInstance.getInstance().duration();
+      audioStore.currentInstance.play();
+    });
+  } else {
+    audioStore.currentInstance.play();
   }
-  audioStore.currentInstance.getInstance().on("end", function () {
-    if (!audioStore.isLoop) {
-      onClickNext();
-    }
-  });
   intervalId = setInterval(() => {
     if (!audioStore.currentInstance) return;
     isPlaying.value = audioStore.currentInstance.getIsPlaying();
     seek.value = audioStore.currentInstance.getInstance()?.seek() || 0;
   }, 100);
-  audioStore.currentInstance.setVolume(audioStore.currentVolume);
-  audioStore.currentInstance.getInstance().once("load", function () {
-    if (!audioStore.currentInstance) return;
-    duration.value = audioStore.currentInstance.getInstance().duration();
-  });
-  audioStore.currentInstance.play();
 }
 
 function onClickShuffle() {
