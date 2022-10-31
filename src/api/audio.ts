@@ -1,17 +1,22 @@
 import { Howl, Howler } from 'howler';
 
 export class AudioController {
-  _howlInstance: Howl|null
+  _howlInstance: Howl | null
   _isPaused = true
   _isPlaying = false
   _instanceId: number | undefined = undefined
 
   constructor(file: string) {
+    if (Howler.noAudio) {
+      console.error('No audio available')
+      return
+    }
+
     const options = {
       src: file,
       html5: Howler.usingWebAudio
     }
-
+    Howler.html5PoolSize = 50
     this._howlInstance = new Howl(options)
   }
 
@@ -61,7 +66,7 @@ export class AudioController {
     this._isPlaying = false
   }
 
-  
+
   stop() {
     if (!this._howlInstance) return
     if (this._howlInstance.playing() || this._isPaused === true) {

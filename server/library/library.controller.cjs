@@ -130,6 +130,7 @@ const update = async (updatedItem) => {
 
 /*
 * remove a specific entry from the database
+* @param {string} - uuid of the item to delete
 * @return {boolean} - true if the entry is removed, false if not 
 * and null if database is not initialized
 */

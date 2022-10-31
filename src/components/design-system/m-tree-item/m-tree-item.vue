@@ -5,16 +5,24 @@
       {{ item.label }}
     </div>
     <div class="m-tree-item__controls">
-      <button-play-small-svg @click="onSelectFolder(item, true)" />
+      <m-button-control-secondary @click="onSelectFolder(item, true)">
+        <button-play-small-svg />
+      </m-button-control-secondary>
+      <m-button-control-secondary @click="onDelete(item)">
+        <button-delete-svg />
+      </m-button-control-secondary>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { emit } from "process";
-import { ref } from "vue";
+import { remove } from "../../../api/library";
+import MButtonControlSecondary from "../m-button/m-button.control.secondary.vue";
 import ButtonPlaySmallSvg from "../../../assets/svg/icons/play-small.svg";
+import ButtonDeleteSvg from "../../../assets/svg/icons/delete.svg";
+import { useLibraryStore } from "../../../stores/library/library";
 
+const libraryStore = useLibraryStore();
 const props = defineProps({
   item: {
     type: Object,
@@ -34,6 +42,13 @@ function onSelectFolder(item, autoPlay = false) {
     autoPlay,
   });
 }
+
+async function onDelete(folder) {
+  if (confirm(`Supprimer la playlist ${folder.label} ?`)) {
+    await remove(folder.uuid);
+    await libraryStore.refreshLibrary();
+  }
+}
 </script>
 
 <style lang="scss">
@@ -50,7 +65,10 @@ function onSelectFolder(item, autoPlay = false) {
     color: darken($font-color-light, 20%);
 
     #{$self}__controls {
-      display: block !important;
+      display: flex !important;
+      flex-direction: row;
+      align-items: center;
+      column-gap: 0.5rem;
     }
 
     .status-indicator {
@@ -72,11 +90,7 @@ function onSelectFolder(item, autoPlay = false) {
     position: absolute;
     right: 1rem;
     top: 0;
-    width: 1.5rem;
-    height: 1.5rem;
-    padding: 0.25rem;
-    border-radius: 999px;
-    background-color: $playlists-bg-color-play;
+    height: 1.6rem;
     display: none;
 
     svg {
@@ -84,10 +98,17 @@ function onSelectFolder(item, autoPlay = false) {
       fill: $playlists-button-color-play;
     }
 
-    &:hover {
-      svg {
-        height: 100%;
-        fill: $playlists-button-color-playing;
+    .m-button-control {
+      background-color: $playlists-bg-color-play;
+      padding: 0.25rem;
+      height: 100%;
+      width: auto;
+
+      &:hover {
+        svg {
+          height: 100%;
+          fill: $playlists-button-color-playing;
+        }
       }
     }
   }
